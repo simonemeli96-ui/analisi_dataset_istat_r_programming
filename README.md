@@ -128,4 +128,4 @@ variabili demografiche.
 I microdati ISTAT sono pubblici e disponibili sul portale ufficiale.  
 Il dataset grezzo non è incluso nel repository per ragioni di dimensione.  
 Per riprodurre l'analisi, scaricare il file `AVQ_Microdati_2023.txt` 
-e aggiornare il percorso nella prima riga del codice.
+da ISTAT e aggiornare il percorso nella prima riga del codice.
