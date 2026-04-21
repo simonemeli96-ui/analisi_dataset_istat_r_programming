@@ -1,0 +1,2480 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Progetto R},
+  pdfauthor={Daniele Cepparrone, Simone Meli, Federico Orizzonte},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Progetto R}
+\author{Daniele Cepparrone, Simone Meli, Federico Orizzonte}
+\date{2025-06-21}
+
+\begin{document}
+\maketitle
+
+\section{INTRODUZIONE}\label{introduzione}
+
+\section{Con questo lavoro si vuole comprendere quanto la soddisfazione
+di vita sia influenzata dalle
+situazioni}\label{con-questo-lavoro-si-vuole-comprendere-quanto-la-soddisfazione-di-vita-sia-influenzata-dalle-situazioni}
+
+\section{socio-demografiche. Per farlo, si è utilizzato un dataset
+proveniente da un'indagine ISTAT dal
+titolo}\label{socio-demografiche.-per-farlo-si-uxe8-utilizzato-un-dataset-proveniente-da-unindagine-istat-dal-titolo}
+
+\section{``Aspetti della Vita Quotidiana'' dell'anno 2023 riguardante la
+popolazione italiana. L'obiettivo prefissato \# è identificare quali
+fattori demografici e relazionali influenzano maggiormente il benessere
+soggettivo,}\label{aspetti-della-vita-quotidiana-dellanno-2023-riguardante-la-popolazione-italiana.-lobiettivo-prefissato-uxe8-identificare-quali-fattori-demografici-e-relazionali-influenzano-maggiormente-il-benessere-soggettivo}
+
+\section{facendo un focus anche sul ruolo delle relazioni
+interpersonali. Il lavoro si articola in tre
+fasi:}\label{facendo-un-focus-anche-sul-ruolo-delle-relazioni-interpersonali.-il-lavoro-si-articola-in-tre-fasi}
+
+\section{una prima fase di preparazione e pulizia dei dati, una seconda
+fase di analisi demografica
+della}\label{una-prima-fase-di-preparazione-e-pulizia-dei-dati-una-seconda-fase-di-analisi-demografica-della}
+
+\section{soddisfazione di vita mediante l'uso di una regressione lineare
+multipla e, infine, lo studio
+delle}\label{soddisfazione-di-vita-mediante-luso-di-una-regressione-lineare-multipla-e-infine-lo-studio-delle}
+
+\section{relazioni tra variabili per identificare i predittori
+principali del benessere individuale,
+effettuata}\label{relazioni-tra-variabili-per-identificare-i-predittori-principali-del-benessere-individuale-effettuata}
+
+\section{tramite ANOVA e test di associazione Chi-quadro. Ci si aspetta
+che la soddisfazione della vita
+sia}\label{tramite-anova-e-test-di-associazione-chi-quadro.-ci-si-aspetta-che-la-soddisfazione-della-vita-sia}
+
+\section{fortemente correlata a quelle variabili demografiche che
+possano trasmettere una maggiore
+tranquillità}\label{fortemente-correlata-a-quelle-variabili-demografiche-che-possano-trasmettere-una-maggiore-tranquillituxe0}
+
+\section{psicologica alla persona; inoltre, il valore delle relazioni
+interpersonali si prevede abbiano un
+impatto}\label{psicologica-alla-persona-inoltre-il-valore-delle-relazioni-interpersonali-si-prevede-abbiano-un-impatto}
+
+\section{importante nel quantificare il grado di soddisfazione degli
+individui.}\label{importante-nel-quantificare-il-grado-di-soddisfazione-degli-individui.}
+
+\section{LIBRERIE}\label{librerie}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(dplyr)   }\CommentTok{\# Manipolazione e trasformazione dei dati}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Caricamento pacchetto: 'dplyr'
+\end{verbatim}
+
+\begin{verbatim}
+## I seguenti oggetti sono mascherati da 'package:stats':
+## 
+##     filter, lag
+\end{verbatim}
+
+\begin{verbatim}
+## I seguenti oggetti sono mascherati da 'package:base':
+## 
+##     intersect, setdiff, setequal, union
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(readr)   }\CommentTok{\# Importazione di file di testo}
+\FunctionTok{library}\NormalTok{(knitr)   }\CommentTok{\# Creazione di tabelle formattate e report}
+\FunctionTok{library}\NormalTok{(ggplot2) }\CommentTok{\# Visualizzazioni grafiche}
+\FunctionTok{library}\NormalTok{(broom)   }\CommentTok{\# Estrazione dei risultati dai modelli statistici}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{PARTE I: IMPORTAZIONE DATI, CREAZIONE E PULIZIA DEL NUOVO
+DATASET}\label{parte-i-importazione-dati-creazione-e-pulizia-del-nuovo-dataset}
+
+\section{1. IMPORTAZIONE DEI DATI}\label{importazione-dei-dati}
+
+\section{L'analisi si basa sui microdati dell'indagine ``Aspetti della
+Vita Quotidiana'', pubblicati dall'ISTAT
+in}\label{lanalisi-si-basa-sui-microdati-dellindagine-aspetti-della-vita-quotidiana-pubblicati-dallistat-in}
+
+\section{formato tab-delimited. Il dataset raccoglie informazioni
+dettagliate sui diversi aspetti del benessere
+e}\label{formato-tab-delimited.-il-dataset-raccoglie-informazioni-dettagliate-sui-diversi-aspetti-del-benessere-e}
+
+\section{della qualità della vita attraverso interviste condotte su un
+campione statisticamente
+rappresentativo}\label{della-qualituxe0-della-vita-attraverso-interviste-condotte-su-un-campione-statisticamente-rappresentativo}
+
+\section{della popolazione italiana
+residente.}\label{della-popolazione-italiana-residente.}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{AVQ\_Microdati\_2023 }\OtherTok{\textless{}{-}} \FunctionTok{read\_delim}\NormalTok{(}\StringTok{"C:/Users/simon/OneDrive/Documenti/AVQ\_Microdati\_2023.txt"}\NormalTok{, }
+                                 \AttributeTok{delim =} \StringTok{"}\SpecialCharTok{\textbackslash{}t}\StringTok{"}\NormalTok{, }\AttributeTok{escape\_double =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{trim\_ws =} \ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: One or more parsing issues, call `problems()` on your data frame for details,
+## e.g.:
+##   dat <- vroom(...)
+##   problems(dat)
+\end{verbatim}
+
+\begin{verbatim}
+## Rows: 41750 Columns: 708
+## -- Column specification --------------------------------------------------------
+## Delimiter: "\t"
+## chr (127): PROFAM, PROIND, NCOMP, RELPAR, ETAMi, ISTRMi, POSIZMi, ATECOMi, N...
+## dbl (570): ANNO, SESSO, STCIVMi, STCPM, AMATR, CONDMi, LAVPAS, TIPNU2, RPNUC...
+## lgl  (11): DOMRIF, NIDLON, NODELE, ABBAND, NONVUO, NOMED, ORARIS, ALNIDO, AC...
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+\end{verbatim}
+
+\section{2. SELEZIONE DELLE VARIABILI DI INTERESSE E CREAZIONE DEL NUOVO
+DATASET}\label{selezione-delle-variabili-di-interesse-e-creazione-del-nuovo-dataset}
+
+\section{Dal dataset originale vengono estratte esclusivamente le
+variabili funzionali agli obiettivi di
+ricerca,}\label{dal-dataset-originale-vengono-estratte-esclusivamente-le-variabili-funzionali-agli-obiettivi-di-ricerca}
+
+\section{ottimizzando la gestione dei dati e migliorando l'efficienza
+dell'analisi. Questa procedura consente
+di}\label{ottimizzando-la-gestione-dei-dati-e-migliorando-lefficienza-dellanalisi.-questa-procedura-consente-di}
+
+\section{focalizzare l'attenzione sulle dimensioni rilevanti per lo
+studio della soddisfazione di
+vita.}\label{focalizzare-lattenzione-sulle-dimensioni-rilevanti-per-lo-studio-della-soddisfazione-di-vita.}
+
+\section{Le variabili selezionate includono la variabile dipendente
+(soddisfazione di vita), le
+variabili}\label{le-variabili-selezionate-includono-la-variabile-dipendente-soddisfazione-di-vita-le-variabili}
+
+\section{relazionali (qualità delle relazioni familiari e amicali) e i
+principali predittori
+socio-demografici}\label{relazionali-qualituxe0-delle-relazioni-familiari-e-amicali-e-i-principali-predittori-socio-demografici}
+
+\section{(età, genere, istruzione, stato civile, condizione
+professionale, area
+geografica).}\label{etuxe0-genere-istruzione-stato-civile-condizione-professionale-area-geografica.}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{variabili\_da\_tenere }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"AMICI2"}\NormalTok{,   }\CommentTok{\# Ha amici su cui contare}
+                         \StringTok{"RELFAM"}\NormalTok{,   }\CommentTok{\# Soddisfazione relazioni familiari}
+                         \StringTok{"RELAM"}\NormalTok{,    }\CommentTok{\# Soddisfazione relazioni amicali}
+                         \StringTok{"VOTOVI"}\NormalTok{,   }\CommentTok{\# Soddisfazione di vita}
+                         \StringTok{"FUTUASP"}\NormalTok{,  }\CommentTok{\# Percezione del futuro}
+                         \StringTok{"ETAMi"}\NormalTok{,    }\CommentTok{\# Classe di età}
+                         \StringTok{"SESSO"}\NormalTok{,    }\CommentTok{\# Genere}
+                         \StringTok{"CONDMi"}\NormalTok{,   }\CommentTok{\# Condizione professionale}
+                         \StringTok{"REGMf"}\NormalTok{,    }\CommentTok{\# Regione di residenza}
+                         \StringTok{"STCIVMi"}\NormalTok{,  }\CommentTok{\# Stato civile}
+                         \StringTok{"ISTRMi"}\NormalTok{)   }\CommentTok{\# Titolo di studio}
+
+
+\CommentTok{\# Creazione del dataset di lavoro con le variabili selezionate}
+\NormalTok{dati\_selezionati }\OtherTok{\textless{}{-}}\NormalTok{ AVQ\_Microdati\_2023[, variabili\_da\_tenere]}
+
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Variabili selezionate:"}\NormalTok{, }\FunctionTok{ncol}\NormalTok{(dati\_selezionati))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Variabili selezionate: 11
+\end{verbatim}
+
+\section{3. PULIZIA DELLE VARIABILI}\label{pulizia-delle-variabili}
+
+\section{La fase di pulizia prevede l'identificazione e il trattamento
+dei valori mancanti, oltre che a un lavoro
+di}\label{la-fase-di-pulizia-prevede-lidentificazione-e-il-trattamento-dei-valori-mancanti-oltre-che-a-un-lavoro-di}
+
+\section{ricodifica per quanto riguarda i nomi delle variabili presenti
+nel dataset. Vengono individuati i
+codici}\label{ricodifica-per-quanto-riguarda-i-nomi-delle-variabili-presenti-nel-dataset.-vengono-individuati-i-codici}
+
+\section{corrispondenti a ``non disponibile'', ``non risponde'' e ``non
+sa''. La rimozione di questi valori è
+necessaria}\label{corrispondenti-a-non-disponibile-non-risponde-e-non-sa.-la-rimozione-di-questi-valori-uxe8-necessaria}
+
+\section{al fine di garantire la validità delle analisi statistiche
+successive, evitando distorsioni nei
+risultati.}\label{al-fine-di-garantire-la-validituxe0-delle-analisi-statistiche-successive-evitando-distorsioni-nei-risultati.}
+
+\section{Questa procedura assicura l'integrità metodologica dell'analisi
+e l'affidabilità delle
+inferenze}\label{questa-procedura-assicura-lintegrituxe0-metodologica-dellanalisi-e-laffidabilituxe0-delle-inferenze}
+
+\section{statistiche.}\label{statistiche.}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Controllo dei valori NA}
+\NormalTok{variabili\_da\_controllare }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"AMICI2"}\NormalTok{, }\StringTok{"RELFAM"}\NormalTok{, }\StringTok{"RELAM"}\NormalTok{, }\StringTok{"VOTOVI"}\NormalTok{, }\StringTok{"FUTUASP"}\NormalTok{, }
+                             \StringTok{"ETAMi"}\NormalTok{, }\StringTok{"SESSO"}\NormalTok{, }\StringTok{"CONDMi"}\NormalTok{, }\StringTok{"REGMf"}\NormalTok{, }\StringTok{"STCIVMi"}\NormalTok{, }\StringTok{"ISTRMi"}\NormalTok{)}
+
+\ControlFlowTok{for}\NormalTok{(var }\ControlFlowTok{in}\NormalTok{ variabili\_da\_controllare) \{}
+ \FunctionTok{cat}\NormalTok{(}\StringTok{"=== "}\NormalTok{, var, }\StringTok{" ===}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+ \FunctionTok{print}\NormalTok{(}\FunctionTok{table}\NormalTok{(AVQ\_Microdati\_2023[[var]], }\AttributeTok{useNA =} \StringTok{"always"}\NormalTok{))}
+ \FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## ===  AMICI2  ===
+## 
+##     1     2     3  <NA> 
+##  7362 26874  2999  4515 
+## 
+## ===  RELFAM  ===
+## 
+##     1     2     3     4  <NA> 
+## 12267 21020  2697   630  5136 
+## 
+## ===  RELAM  ===
+## 
+##     1     2     3     4  <NA> 
+##  8461 21791  5020  1321  5157 
+## 
+## ===  VOTOVI  ===
+## 
+##    00    01    02    03    04    05    06    07    08    09    10  <NA> 
+##   254   154   235   416   684  2694  5244  9401 11245  3961  2455  5007 
+## 
+## ===  FUTUASP  ===
+## 
+##     1     2     3     4  <NA> 
+## 10612 11672  4724  9834  4908 
+## 
+## ===  ETAMi  ===
+## 
+##  001  002  003  004  005  006  007  008  009  010  011  012  013  014  015 <NA> 
+##  744  863 1760 1144  784  774  829 2005 3885 4689 6500 3603 3125 5440 5605    0 
+## 
+## ===  SESSO  ===
+## 
+##     1     2  <NA> 
+## 20054 21696     0 
+## 
+## ===  CONDMi  ===
+## 
+##     1     2     3     9  <NA> 
+## 15630  3280 17741   659  4440 
+## 
+## ===  REGMf  ===
+## 
+##  010  020  030  040  050  060  070  080  090  100  110  120  130  140  150  160 
+## 3023  948 4010 2413 2447 1581 1613 2210 2430 1211 1636 2494 1591 1122 3042 2465 
+##  170  180  190  200  555  666  777  999 <NA> 
+## 1252 1944 2559 1636   48   16   16   43    0 
+## 
+## ===  STCIVMi  ===
+## 
+##     1     2     3     6     9  <NA> 
+## 15441 17452  3269  3492   526  1570 
+## 
+## ===  ISTRMi  ===
+## 
+##    01    07    09    10    99  <NA> 
+##  6312 14206 11047  7863   758  1564
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Conversione dei codici che non hanno un significato in NA}
+\NormalTok{AVQ\_Microdati\_2023}\SpecialCharTok{$}\NormalTok{REGMf[AVQ\_Microdati\_2023}\SpecialCharTok{$}\NormalTok{REGMf }\SpecialCharTok{\%in\%} \FunctionTok{c}\NormalTok{(}\StringTok{"555"}\NormalTok{, }\StringTok{"666"}\NormalTok{, }\StringTok{"777"}\NormalTok{, }\StringTok{"999"}\NormalTok{)] }\OtherTok{\textless{}{-}} \ConstantTok{NA}
+\NormalTok{AVQ\_Microdati\_2023}\SpecialCharTok{$}\NormalTok{STCIVMi[AVQ\_Microdati\_2023}\SpecialCharTok{$}\NormalTok{STCIVMi }\SpecialCharTok{==} \DecValTok{9}\NormalTok{] }\OtherTok{\textless{}{-}} \ConstantTok{NA}  
+\NormalTok{AVQ\_Microdati\_2023}\SpecialCharTok{$}\NormalTok{CONDMi[AVQ\_Microdati\_2023}\SpecialCharTok{$}\NormalTok{CONDMi }\SpecialCharTok{==} \DecValTok{9}\NormalTok{] }\OtherTok{\textless{}{-}} \ConstantTok{NA}
+\NormalTok{AVQ\_Microdati\_2023}\SpecialCharTok{$}\NormalTok{ISTRMi[AVQ\_Microdati\_2023}\SpecialCharTok{$}\NormalTok{ISTRMi }\SpecialCharTok{==} \StringTok{"99"}\NormalTok{] }\OtherTok{\textless{}{-}} \ConstantTok{NA}
+
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Pulizia completata {-} Codici \textquotesingle{}non disponibile\textquotesingle{} convertiti in NA"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Pulizia completata - Codici 'non disponibile' convertiti in NA
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Creazione di un dataset con le variabili ricodificate. Per fare ciò, è stato necessario trasformare i}
+\CommentTok{\# codici numerici ISTAT in etichette descrittive e fattori ordinati, assegnando un significato semantico ai}
+\CommentTok{\# codici. Ciò al fine di rendere i dati maggiormente gestibili e comprensibili per l\textquotesingle{}analisi statistica.}
+
+\NormalTok{base\_pulita }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
+  \AttributeTok{Ha\_amici\_su\_cui\_contare =} \FunctionTok{factor}\NormalTok{(AVQ\_Microdati\_2023}\SpecialCharTok{$}\NormalTok{AMICI2,}
+                                   \AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{),}
+                                   \AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"No"}\NormalTok{, }\StringTok{"Sì"}\NormalTok{, }\StringTok{"Non so"}\NormalTok{)),}
+  
+  \AttributeTok{Soddisf\_relazioni\_familiari =} \FunctionTok{factor}\NormalTok{(AVQ\_Microdati\_2023}\SpecialCharTok{$}\NormalTok{RELFAM,}
+                                       \AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{4}\NormalTok{),}
+                                       \AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"Molto"}\NormalTok{, }\StringTok{"Abbastanza"}\NormalTok{, }\StringTok{"Poco"}\NormalTok{, }\StringTok{"Per niente"}\NormalTok{)),}
+  
+  \AttributeTok{Soddisf\_relazioni\_amici =} \FunctionTok{factor}\NormalTok{(AVQ\_Microdati\_2023}\SpecialCharTok{$}\NormalTok{RELAM,}
+                                   \AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{4}\NormalTok{),}
+                                   \AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"Molto"}\NormalTok{, }\StringTok{"Abbastanza"}\NormalTok{, }\StringTok{"Poco"}\NormalTok{, }\StringTok{"Per niente"}\NormalTok{)),}
+  
+  \AttributeTok{Soddisfazione\_vita =} \FunctionTok{as.numeric}\NormalTok{(AVQ\_Microdati\_2023}\SpecialCharTok{$}\NormalTok{VOTOVI),}
+  
+  \AttributeTok{Percezione\_futuro =} \FunctionTok{factor}\NormalTok{(AVQ\_Microdati\_2023}\SpecialCharTok{$}\NormalTok{FUTUASP,}
+                             \AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{4}\NormalTok{),}
+                             \AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"Migliorerà"}\NormalTok{, }\StringTok{"Resterà la stessa"}\NormalTok{, }\StringTok{"Peggiorerà"}\NormalTok{, }\StringTok{"Non so"}\NormalTok{)),}
+  
+  \AttributeTok{Eta =} \FunctionTok{factor}\NormalTok{(AVQ\_Microdati\_2023}\SpecialCharTok{$}\NormalTok{ETAMi,}
+               \AttributeTok{levels =} \FunctionTok{sprintf}\NormalTok{(}\StringTok{"\%03d"}\NormalTok{, }\DecValTok{1}\SpecialCharTok{:}\DecValTok{15}\NormalTok{),}
+               \AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"0{-}2 anni"}\NormalTok{, }\StringTok{"3{-}5 anni"}\NormalTok{, }\StringTok{"6{-}10 anni"}\NormalTok{, }\StringTok{"11{-}13 anni"}\NormalTok{, }\StringTok{"14{-}17 anni"}\NormalTok{,}
+                          \StringTok{"18{-}24 anni"}\NormalTok{, }\StringTok{"25{-}34 anni"}\NormalTok{, }\StringTok{"35{-}44 anni"}\NormalTok{, }\StringTok{"45{-}54 anni"}\NormalTok{, }\StringTok{"55{-}59 anni"}\NormalTok{,}
+                          \StringTok{"60{-}64 anni"}\NormalTok{, }\StringTok{"65{-}69 anni"}\NormalTok{, }\StringTok{"70{-}74 anni"}\NormalTok{, }\StringTok{"75{-}79 anni"}\NormalTok{, }\StringTok{"80+ anni"}\NormalTok{)),}
+  
+  \AttributeTok{Sesso =} \FunctionTok{factor}\NormalTok{(AVQ\_Microdati\_2023}\SpecialCharTok{$}\NormalTok{SESSO,}
+                 \AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{),}
+                 \AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"Maschio"}\NormalTok{, }\StringTok{"Femmina"}\NormalTok{)),}
+  
+  \AttributeTok{Condizione\_professionale =} \FunctionTok{factor}\NormalTok{(AVQ\_Microdati\_2023}\SpecialCharTok{$}\NormalTok{CONDMi,}
+                                    \AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{),  }\CommentTok{\# RIMUOVI IL 9!}
+                                    \AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"Occupato"}\NormalTok{, }\StringTok{"In cerca di lavoro"}\NormalTok{, }\StringTok{"Inattivo"}\NormalTok{)),}
+  
+  \AttributeTok{Regione =} \FunctionTok{factor}\NormalTok{(AVQ\_Microdati\_2023}\SpecialCharTok{$}\NormalTok{REGMf,}
+                   \AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\StringTok{"010"}\NormalTok{, }\StringTok{"020"}\NormalTok{, }\StringTok{"030"}\NormalTok{, }\StringTok{"040"}\NormalTok{, }\StringTok{"050"}\NormalTok{, }\StringTok{"060"}\NormalTok{, }\StringTok{"070"}\NormalTok{, }\StringTok{"080"}\NormalTok{, }\StringTok{"090"}\NormalTok{, }
+                              \StringTok{"100"}\NormalTok{, }\StringTok{"110"}\NormalTok{, }\StringTok{"120"}\NormalTok{, }\StringTok{"130"}\NormalTok{, }\StringTok{"140"}\NormalTok{, }\StringTok{"150"}\NormalTok{, }\StringTok{"160"}\NormalTok{, }\StringTok{"170"}\NormalTok{, }\StringTok{"180"}\NormalTok{, }
+                              \StringTok{"190"}\NormalTok{, }\StringTok{"200"}\NormalTok{),  }\CommentTok{\# RIMUOVI 555,666,777,999!}
+                   \AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"Piemonte"}\NormalTok{, }\StringTok{"Valle d\textquotesingle{}Aosta"}\NormalTok{, }\StringTok{"Lombardia"}\NormalTok{, }\StringTok{"Trentino{-}Alto Adige"}\NormalTok{,}
+                              \StringTok{"Veneto"}\NormalTok{, }\StringTok{"Friuli{-}Venezia Giulia"}\NormalTok{, }\StringTok{"Liguria"}\NormalTok{, }\StringTok{"Emilia{-}Romagna"}\NormalTok{,}
+                              \StringTok{"Toscana"}\NormalTok{, }\StringTok{"Umbria"}\NormalTok{, }\StringTok{"Marche"}\NormalTok{, }\StringTok{"Lazio"}\NormalTok{, }\StringTok{"Abruzzo"}\NormalTok{, }\StringTok{"Molise"}\NormalTok{,}
+                              \StringTok{"Campania"}\NormalTok{, }\StringTok{"Puglia"}\NormalTok{, }\StringTok{"Basilicata"}\NormalTok{, }\StringTok{"Calabria"}\NormalTok{, }\StringTok{"Sicilia"}\NormalTok{, }\StringTok{"Sardegna"}\NormalTok{)),}
+  
+  \AttributeTok{Stato\_civile =} \FunctionTok{factor}\NormalTok{(AVQ\_Microdati\_2023}\SpecialCharTok{$}\NormalTok{STCIVMi,}
+                        \AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{6}\NormalTok{),  }\CommentTok{\#9 escluso perché già convertito in NA}
+                        \AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"Celibe/Nubile"}\NormalTok{, }\StringTok{"Coniugato/a convivente"}\NormalTok{,}
+                                   \StringTok{"Separato/a o divorziato/a"}\NormalTok{, }\StringTok{"Vedovo/a"}\NormalTok{)),}
+  
+  \AttributeTok{Titolo\_studio =} \FunctionTok{factor}\NormalTok{(AVQ\_Microdati\_2023}\SpecialCharTok{$}\NormalTok{ISTRMi,}
+                         \AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\StringTok{"01"}\NormalTok{, }\StringTok{"07"}\NormalTok{, }\StringTok{"09"}\NormalTok{, }\StringTok{"10"}\NormalTok{),  }\CommentTok{\#99 escluso perché già convertito in NA}
+                         \AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"Laurea o post{-}laurea"}\NormalTok{, }\StringTok{"Diploma"}\NormalTok{,}
+                                    \StringTok{"Licenza media"}\NormalTok{, }\StringTok{"Elementare o nessun titolo"}\NormalTok{))}
+\NormalTok{)}
+
+\CommentTok{\# Summary per verificare la corretta ricodifica}
+\FunctionTok{kable}\NormalTok{(}\FunctionTok{summary}\NormalTok{(base\_pulita), }\AttributeTok{caption =} \StringTok{"Statistiche descrittive delle variabili ricodificate"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 22\tabcolsep) * \real{0.0112}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 22\tabcolsep) * \real{0.0899}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 22\tabcolsep) * \real{0.1049}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 22\tabcolsep) * \real{0.0899}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 22\tabcolsep) * \real{0.0712}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 22\tabcolsep) * \real{0.0974}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 22\tabcolsep) * \real{0.0637}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 22\tabcolsep) * \real{0.0524}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 22\tabcolsep) * \real{0.1161}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 22\tabcolsep) * \real{0.0599}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 22\tabcolsep) * \real{0.1199}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 22\tabcolsep) * \real{0.1236}}@{}}
+\caption{Statistiche descrittive delle variabili
+ricodificate}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Ha\_amici\_su\_cui\_contare
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Soddisf\_relazioni\_familiari
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Soddisf\_relazioni\_amici
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Soddisfazione\_vita
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Percezione\_futuro
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Eta
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Sesso
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Condizione\_professionale
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Regione
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Stato\_civile
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Titolo\_studio
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Ha\_amici\_su\_cui\_contare
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Soddisf\_relazioni\_familiari
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Soddisf\_relazioni\_amici
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Soddisfazione\_vita
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Percezione\_futuro
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Eta
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Sesso
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Condizione\_professionale
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Regione
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Stato\_civile
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Titolo\_studio
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+& No : 7362 & Molto :12267 & Molto : 8461 & Min. : 0.000 & Migliorerà
+:10612 & 60-64 anni: 6500 & Maschio:20054 & Occupato :15630 & Lombardia:
+4010 & Celibe/Nubile :15441 & Laurea o post-laurea : 6312 \\
+& Sì :26874 & Abbastanza:21020 & Abbastanza:21791 & 1st Qu.: 6.000 &
+Resterà la stessa:11672 & 80+ anni : 5605 & Femmina:21696 & In cerca di
+lavoro: 3280 & Campania : 3042 & Coniugato/a convivente :17452 & Diploma
+:14206 \\
+& Non so: 2999 & Poco : 2697 & Poco : 5020 & Median : 7.000 & Peggiorerà
+: 4724 & 75-79 anni: 5440 & NA & Inattivo :17741 & Piemonte : 3023 &
+Separato/a o divorziato/a: 3269 & Licenza media :11047 \\
+& NA's : 4515 & Per niente: 630 & Per niente: 1321 & Mean : 7.226 & Non
+so : 9834 & 55-59 anni: 4689 & NA & NA's : 5099 & Sicilia : 2559 &
+Vedovo/a : 3492 & Elementare o nessun titolo: 7863 \\
+& NA & NA's : 5136 & NA's : 5157 & 3rd Qu.: 8.000 & NA's : 4908 & 45-54
+anni: 3885 & NA & NA & Lazio : 2494 & NA's : 2096 & NA's : 2322 \\
+& NA & NA & NA & Max. :10.000 & NA & 65-69 anni: 3603 & NA & NA &
+(Other) :26499 & NA & NA \\
+& NA & NA & NA & NA's :5007 & NA & (Other) :12028 & NA & NA & NA's : 123
+& NA & NA \\
+\end{longtable}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Controllo dei valori mancanti per valutare l\textquotesingle{}integrità del dataset. Prendendo visione della percentuale dei}
+\CommentTok{\# missing è possibile avere un\textquotesingle{}idea più precisa su come gestire gli stessi.}
+
+\CommentTok{\# Conteggio dei valori mancanti per ogni variabile}
+\NormalTok{valori\_mancanti }\OtherTok{\textless{}{-}} \FunctionTok{colSums}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(base\_pulita))}
+\FunctionTok{print}\NormalTok{(}\StringTok{"Valori mancanti per variabile:"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "Valori mancanti per variabile:"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(valori\_mancanti)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##     Ha_amici_su_cui_contare Soddisf_relazioni_familiari 
+##                        4515                        5136 
+##     Soddisf_relazioni_amici          Soddisfazione_vita 
+##                        5157                        5007 
+##           Percezione_futuro                         Eta 
+##                        4908                           0 
+##                       Sesso    Condizione_professionale 
+##                           0                        5099 
+##                     Regione                Stato_civile 
+##                         123                        2096 
+##               Titolo_studio 
+##                        2322
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Calcolo della percentuale complessiva di valori mancanti nel dataset}
+\NormalTok{perc\_mancanti }\OtherTok{\textless{}{-}} \FunctionTok{mean}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(base\_pulita)) }\SpecialCharTok{*} \DecValTok{100}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{Percentuale totale di valori mancanti:"}\NormalTok{, }\FunctionTok{round}\NormalTok{(perc\_mancanti, }\DecValTok{2}\NormalTok{), }\StringTok{"\%"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Percentuale totale di valori mancanti: 7.48 %
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Creazione di una tabella di riepilogo formattata}
+\FunctionTok{kable}\NormalTok{(}\FunctionTok{data.frame}\NormalTok{(}
+  \AttributeTok{Variabile =} \FunctionTok{names}\NormalTok{(valori\_mancanti),}
+  \AttributeTok{Valori\_Mancanti =}\NormalTok{ valori\_mancanti,}
+  \AttributeTok{Percentuale =} \FunctionTok{round}\NormalTok{(valori\_mancanti }\SpecialCharTok{/} \FunctionTok{nrow}\NormalTok{(base\_pulita) }\SpecialCharTok{*} \DecValTok{100}\NormalTok{, }\DecValTok{2}\NormalTok{)}
+\NormalTok{), }\AttributeTok{caption =} \StringTok{"Analisi valori mancanti per variabile"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.3333}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1905}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1429}}@{}}
+\caption{Analisi valori mancanti per variabile}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Variabile
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Valori\_Mancanti
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Percentuale
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Variabile
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Valori\_Mancanti
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Percentuale
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Ha\_amici\_su\_cui\_contare & Ha\_amici\_su\_cui\_contare & 4515 &
+10.81 \\
+Soddisf\_relazioni\_familiari & Soddisf\_relazioni\_familiari & 5136 &
+12.30 \\
+Soddisf\_relazioni\_amici & Soddisf\_relazioni\_amici & 5157 & 12.35 \\
+Soddisfazione\_vita & Soddisfazione\_vita & 5007 & 11.99 \\
+Percezione\_futuro & Percezione\_futuro & 4908 & 11.76 \\
+Eta & Eta & 0 & 0.00 \\
+Sesso & Sesso & 0 & 0.00 \\
+Condizione\_professionale & Condizione\_professionale & 5099 & 12.21 \\
+Regione & Regione & 123 & 0.29 \\
+Stato\_civile & Stato\_civile & 2096 & 5.02 \\
+Titolo\_studio & Titolo\_studio & 2322 & 5.56 \\
+\end{longtable}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# L\textquotesingle{}ultima parte del processo di pulizia riguarda la rimozione dei valori mancati e non disponibili. }
+\CommentTok{\# Ciò è fondamentale per avere un dataset pulito e pronto per le successive analisi statistiche.}
+
+\CommentTok{\# Rimozione delle righe con valori mancanti}
+\NormalTok{dati\_completi }\OtherTok{\textless{}{-}}\NormalTok{ base\_pulita[}\FunctionTok{complete.cases}\NormalTok{(base\_pulita), ]}
+
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Dataset originale:"}\NormalTok{, }\FunctionTok{nrow}\NormalTok{(base\_pulita), }\StringTok{"righe"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Dataset originale: 41750 righe
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{Dataset completo:"}\NormalTok{, }\FunctionTok{nrow}\NormalTok{(dati\_completi), }\StringTok{"righe"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Dataset completo: 34949 righe
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Calcolo delle righe rimosse}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{Righe rimosse:"}\NormalTok{, }\FunctionTok{nrow}\NormalTok{(base\_pulita) }\SpecialCharTok{{-}} \FunctionTok{nrow}\NormalTok{(dati\_completi))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Righe rimosse: 6801
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{Percentuale mantenuta:"}\NormalTok{, }\FunctionTok{round}\NormalTok{(}\FunctionTok{nrow}\NormalTok{(dati\_completi)}\SpecialCharTok{/}\FunctionTok{nrow}\NormalTok{(base\_pulita)}\SpecialCharTok{*}\DecValTok{100}\NormalTok{, }\DecValTok{1}\NormalTok{), }\StringTok{"\%"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Percentuale mantenuta: 83.7 %
+\end{verbatim}
+
+\subsection{PARTE II: ANALISI SULLA SODDISFAZIONE DELLA VITA IN BASE
+ALLE CARATTERISTICHE
+DEMOGRAFICHE}\label{parte-ii-analisi-sulla-soddisfazione-della-vita-in-base-alle-caratteristiche-demografiche}
+
+\section{1. ISTOGRAMMA DELLA VARIABILE DIPENDENTE VOTOVI (Soddisfazione
+della
+Vita)}\label{istogramma-della-variabile-dipendente-votovi-soddisfazione-della-vita}
+
+\section{Il grafico mostra come sono distribuiti i punteggi di
+soddisfazione della vita nel nostro
+campione.}\label{il-grafico-mostra-come-sono-distribuiti-i-punteggi-di-soddisfazione-della-vita-nel-nostro-campione.}
+
+\section{L'istogramma consente di poter ottenere delle importanti
+informazioni:}\label{listogramma-consente-di-poter-ottenere-delle-importanti-informazioni}
+
+\section{- se i dati sono distribuiti normalmente oppure se hanno
+un'altra
+distribuzione}\label{se-i-dati-sono-distribuiti-normalmente-oppure-se-hanno-unaltra-distribuzione}
+
+\section{- qual è la moda}\label{qual-uxe8-la-moda}
+
+\section{- se sono presenti valori estremi o concentrazioni
+inusuali}\label{se-sono-presenti-valori-estremi-o-concentrazioni-inusuali}
+
+\section{- dove si posiziona la media rispetto alla distribuzione (la
+linea rossa della media ci aiuta a capire
+se}\label{dove-si-posiziona-la-media-rispetto-alla-distribuzione-la-linea-rossa-della-media-ci-aiuta-a-capire-se}
+
+\section{la distribuzione è simmetrica oppure
+assimetrica)}\label{la-distribuzione-uxe8-simmetrica-oppure-assimetrica}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Creazione dell\textquotesingle{}istogramma per l\textquotesingle{}analisi sulla soddisfazione della vita}
+  \FunctionTok{ggplot}\NormalTok{(dati\_completi, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Soddisfazione\_vita)) }\SpecialCharTok{+}
+  
+  \CommentTok{\# Istogramma}
+  \FunctionTok{geom\_histogram}\NormalTok{(}\AttributeTok{binwidth =} \DecValTok{1}\NormalTok{, }\AttributeTok{fill =} \StringTok{"lightblue"}\NormalTok{, }\AttributeTok{color =} \StringTok{"black"}\NormalTok{) }\SpecialCharTok{+}
+  
+  \CommentTok{\# Linea verticale per indicare la media }
+  \FunctionTok{geom\_vline}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{xintercept =} \FunctionTok{mean}\NormalTok{(Soddisfazione\_vita)), }\AttributeTok{color =} \StringTok{"red"}\NormalTok{, }\AttributeTok{linetype =} \StringTok{"dashed"}\NormalTok{) }\SpecialCharTok{+} 
+    
+  \CommentTok{\# Etichette e Titoli}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"Distribuzione Soddisfazione di Vita"}\NormalTok{,}
+    \AttributeTok{subtitle =} \FunctionTok{paste}\NormalTok{(}\StringTok{"Media ="}\NormalTok{, }\FunctionTok{round}\NormalTok{(}\FunctionTok{mean}\NormalTok{(dati\_completi}\SpecialCharTok{$}\NormalTok{Soddisfazione\_vita), }\DecValTok{2}\NormalTok{)),}
+    \AttributeTok{x =} \StringTok{"Soddisfazione (0{-}10)"}\NormalTok{, }
+    \AttributeTok{y =} \StringTok{"Frequenza"}
+\NormalTok{  ) }\SpecialCharTok{+}
+  
+  \CommentTok{\#Personalizzazione asse delle x}
+  \FunctionTok{scale\_x\_continuous}\NormalTok{(}\AttributeTok{breaks =} \DecValTok{0}\SpecialCharTok{:}\DecValTok{10}\NormalTok{) }\SpecialCharTok{+}
+  
+  \CommentTok{\#Tema pulito per rimuovere lo sfondo grigio}
+  \FunctionTok{theme\_minimal}\NormalTok{() }
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{CODICE-UNITO-R_files/figure-latex/unnamed-chunk-9-1.pdf}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# COSA SI EVINCE DAL GRAFICO}
+\CommentTok{\# L\textquotesingle{}istogramma mostra una distribuzione asimmetrica negativa con una forte concentrazione nei valori alti  }
+\CommentTok{\# della scala. Il valore 8 è la moda del campione. La media di 7.23 indica un livello di soddisfazione }
+\CommentTok{\# generale buono. La distribuzione rivela che poche persone hanno livelli molto bassi di soddisfazione }
+\CommentTok{\# (valori 0{-}4), mentre la maggioranza si colloca nella fascia alta (7{-}9). Si può ipotizzare che ciò accade }
+\CommentTok{\# in quanto le persone tendenzialmente attribuiscono una valutazione positiva alla propria vita.}
+\end{Highlighting}
+\end{Shaded}
+
+\section{2. MODELLO DI REGRESSIONE LINEARE
+MULTIPLA}\label{modello-di-regressione-lineare-multipla}
+
+\section{Il modello di regressione lineare multipla esamina
+l'associazione tra la soddisfazione di vita e
+le}\label{il-modello-di-regressione-lineare-multipla-esamina-lassociazione-tra-la-soddisfazione-di-vita-e-le}
+
+\section{variabili demografiche. L'obiettivo è verificare se esistono
+differenze significative in relazione
+al}\label{variabili-demografiche.-lobiettivo-uxe8-verificare-se-esistono-differenze-significative-in-relazione-al}
+
+\section{genere, età, livello di istruzione, stato civile e condizione
+lavorativa.}\label{genere-etuxe0-livello-di-istruzione-stato-civile-e-condizione-lavorativa.}
+
+\section{Il modello misura l'effetto isolato di ogni variabile sulla
+soddisfazione, eliminando l'influenza di
+tutte}\label{il-modello-misura-leffetto-isolato-di-ogni-variabile-sulla-soddisfazione-eliminando-linfluenza-di-tutte}
+
+\section{le altre variabili. Pertanto, ogni coefficiente mostra di
+quanto varia la soddisfazione quando solo
+una}\label{le-altre-variabili.-pertanto-ogni-coefficiente-mostra-di-quanto-varia-la-soddisfazione-quando-solo-una}
+
+\section{variabile specifica cambia, mantenendo le restanti variabili
+costanti.}\label{variabile-specifica-cambia-mantenendo-le-restanti-variabili-costanti.}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Creazione del modello di regressione usando la funzione lm() (linear model)}
+\CommentTok{\# Formula della regressione: Variabile\_dipendente \textasciitilde{} (è spiegata da...) Variabile1 + Variabile2 + ...}
+
+\NormalTok{modello\_regressione }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(}
+\NormalTok{  Soddisfazione\_vita }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Sesso }\SpecialCharTok{+}\NormalTok{ Eta }\SpecialCharTok{+}\NormalTok{ Titolo\_studio }\SpecialCharTok{+} 
+\NormalTok{                       Stato\_civile }\SpecialCharTok{+}\NormalTok{ Condizione\_professionale, }
+  \AttributeTok{data =}\NormalTok{ dati\_completi}
+\NormalTok{)}
+
+
+\CommentTok{\# Gli indicatori del modello}
+\CommentTok{\# {-} Coefficienti: quanto "pesa" ogni variabile}
+\CommentTok{\# {-} Standard Error: quanto sono precisi i coefficienti  }
+\CommentTok{\# {-} t{-}value e Pr(\textgreater{}|t|): indicano se l\textquotesingle{}effetto è "vero" o dovuto al caso (se t{-}value è alto e il p{-}value}
+\CommentTok{\#   è basso, allora l\textquotesingle{}effetto è reale e affidabile) }
+\CommentTok{\# {-} R{-}squared: quanto riusciamo a spiegare del fenomeno }
+\CommentTok{\# {-} F{-}statistic: se il modello nel complesso è significativo}
+
+\FunctionTok{summary}\NormalTok{(modello\_regressione)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = Soddisfazione_vita ~ Sesso + Eta + Titolo_studio + 
+##     Stato_civile + Condizione_professionale, data = dati_completi)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -7.8726 -0.7370  0.2354  0.8861  3.6996 
+## 
+## Coefficients:
+##                                            Estimate Std. Error t value Pr(>|t|)
+## (Intercept)                                 8.15064    0.07044 115.711  < 2e-16
+## SessoFemmina                               -0.10891    0.01824  -5.971 2.39e-09
+## Eta18-24 anni                              -0.18638    0.08631  -2.159  0.03082
+## Eta25-34 anni                              -0.23197    0.08602  -2.697  0.00701
+## Eta35-44 anni                              -0.43725    0.07491  -5.837 5.35e-09
+## Eta45-54 anni                              -0.65919    0.07182  -9.179  < 2e-16
+## Eta55-59 anni                              -0.76793    0.07258 -10.580  < 2e-16
+## Eta60-64 anni                              -0.92704    0.07203 -12.871  < 2e-16
+## Eta65-69 anni                              -0.94393    0.07403 -12.750  < 2e-16
+## Eta70-74 anni                              -0.90203    0.07364 -12.248  < 2e-16
+## Eta75-79 anni                              -0.83116    0.07001 -11.872  < 2e-16
+## Eta80+ anni                                -0.99914    0.07214 -13.850  < 2e-16
+## Titolo_studioDiploma                       -0.07916    0.02509  -3.155  0.00161
+## Titolo_studioLicenza media                 -0.12436    0.02797  -4.446 8.76e-06
+## Titolo_studioElementare o nessun titolo    -0.26475    0.03674  -7.206 5.87e-13
+## Stato_civileConiugato/a convivente          0.38118    0.02540  15.006  < 2e-16
+## Stato_civileSeparato/a o divorziato/a       0.08349    0.03623   2.304  0.02121
+## Stato_civileVedovo/a                        0.02865    0.04107   0.698  0.48546
+## Condizione_professionaleIn cerca di lavoro -0.54958    0.03255 -16.882  < 2e-16
+## Condizione_professionaleInattivo           -0.20990    0.02776  -7.562 4.07e-14
+##                                               
+## (Intercept)                                ***
+## SessoFemmina                               ***
+## Eta18-24 anni                              *  
+## Eta25-34 anni                              ** 
+## Eta35-44 anni                              ***
+## Eta45-54 anni                              ***
+## Eta55-59 anni                              ***
+## Eta60-64 anni                              ***
+## Eta65-69 anni                              ***
+## Eta70-74 anni                              ***
+## Eta75-79 anni                              ***
+## Eta80+ anni                                ***
+## Titolo_studioDiploma                       ** 
+## Titolo_studioLicenza media                 ***
+## Titolo_studioElementare o nessun titolo    ***
+## Stato_civileConiugato/a convivente         ***
+## Stato_civileSeparato/a o divorziato/a      *  
+## Stato_civileVedovo/a                          
+## Condizione_professionaleIn cerca di lavoro ***
+## Condizione_professionaleInattivo           ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 1.607 on 34929 degrees of freedom
+## Multiple R-squared:  0.03498,    Adjusted R-squared:  0.03446 
+## F-statistic: 66.64 on 19 and 34929 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# CONCLUSIONI:}
+\CommentTok{\# I residui del modello mostrano come sono distribuiti gli errori predittivi. La mediana dei residui è }
+\CommentTok{\# 0.2354, molto vicina allo zero, indicando che il modello presenta un bias sistematico molto lieve verso la \# sottostima; pertanto il modello sottostima la soddisfazione nella metà dei casi di almeno 0.24 punti.}
+\CommentTok{\# I quartili ({-}0.7370 e 0.8861) sono abbastanza simmetrici intorno alla mediana, suggerendo una}
+\CommentTok{\# distribuzione equilibrata degli errori. Tuttavia, i valori estremi rivelano che il modello sottostima la}
+\CommentTok{\# soddisfazione di alcune persone fino a 7.87 punti (Min = {-}7.8726) e la sovrastima di altre fino a 3.70}
+\CommentTok{\# punti (Max = 3.6996). Questi residui estremi indicano che esistono casi individuali che il modello}
+\CommentTok{\# demografico non riesce a spiegare, confermando come i fattori non demografici hanno un peso determinante }
+\CommentTok{\# nella soddisfazione di vita.}
+\end{Highlighting}
+\end{Shaded}
+
+\section{3. STATISTICHE RIASSUNTIVE DEL
+MODELLO}\label{statistiche-riassuntive-del-modello}
+
+\section{Per valutare l'efficacia del modello di regressione nella
+predizione della soddisfazione di vita,
+si}\label{per-valutare-lefficacia-del-modello-di-regressione-nella-predizione-della-soddisfazione-di-vita-si}
+
+\section{analizzano le seguenti statistiche
+diagnostiche:}\label{analizzano-le-seguenti-statistiche-diagnostiche}
+
+\section{- R-squared: indica la proporzione di varianza spiegata dal
+modello (range 0-1). Valori più alti
+indicano}\label{r-squared-indica-la-proporzione-di-varianza-spiegata-dal-modello-range-0-1.-valori-piuxf9-alti-indicano}
+
+\section{maggiore capacità
+predittiva;}\label{maggiore-capacituxe0-predittiva}
+
+\section{- R-squared aggiustato: versione corretta dell'R-squared che
+penalizza l'aggiunta di variabili
+poco}\label{r-squared-aggiustato-versione-corretta-dellr-squared-che-penalizza-laggiunta-di-variabili-poco}
+
+\section{informative;}\label{informative}
+
+\section{- F-statistic: verifica la significatività complessiva del
+modello. Valori elevati (\textgreater4-5) indicano
+che}\label{f-statistic-verifica-la-significativituxe0-complessiva-del-modello.-valori-elevati-4-5-indicano-che}
+
+\section{il modello è statisticamente
+valido;}\label{il-modello-uxe8-statisticamente-valido}
+
+\section{- p-value: probabilità che i risultati siano casuali. Se
+\textless{} 0.05 il modello è statisticamente
+significativo}\label{p-value-probabilituxe0-che-i-risultati-siano-casuali.-se-0.05-il-modello-uxe8-statisticamente-significativo}
+
+\section{- Gradi di libertà: differenza tra numero di osservazioni e
+parametri stimati. Valori più
+elevati}\label{gradi-di-libertuxe0-differenza-tra-numero-di-osservazioni-e-parametri-stimati.-valori-piuxf9-elevati}
+
+\section{aumentano l'affidabilità delle
+stime.}\label{aumentano-laffidabilituxe0-delle-stime.}
+
+\section{L'analisi congiunta di queste metriche permette di valutare sia
+la bontà di adattamento che la
+validità}\label{lanalisi-congiunta-di-queste-metriche-permette-di-valutare-sia-la-bontuxe0-di-adattamento-che-la-validituxe0}
+
+\section{statistica del modello
+proposto.}\label{statistica-del-modello-proposto.}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Estrazione delle statistiche principali del modello }
+\NormalTok{statistiche\_modello\_regressione }\OtherTok{\textless{}{-}} \FunctionTok{glance}\NormalTok{(modello\_regressione) }\CommentTok{\#glance estrae le statistiche principali}
+                                                               \CommentTok{\#in un formato pulito e ordinato }
+
+\CommentTok{\# Indici di bontà del modello (visualizzazione formattata delle statistiche principali)}
+
+\FunctionTok{cat}\NormalTok{(}\StringTok{"=== STATISTICHE DEL MODELLO ===}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## === STATISTICHE DEL MODELLO ===
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# R{-}squared}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"R{-}squared:"}\NormalTok{, }\FunctionTok{round}\NormalTok{(statistiche\_modello\_regressione}\SpecialCharTok{$}\NormalTok{r.squared, }\DecValTok{4}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## R-squared: 0.035
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# R{-}squared aggiustato }
+\FunctionTok{cat}\NormalTok{(}\StringTok{"R{-}squared aggiustato:"}\NormalTok{, }\FunctionTok{round}\NormalTok{(statistiche\_modello\_regressione}\SpecialCharTok{$}\NormalTok{adj.r.squared, }\DecValTok{4}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## R-squared aggiustato: 0.0345
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# F{-}statistic}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"F{-}statistic:"}\NormalTok{, }\FunctionTok{round}\NormalTok{(statistiche\_modello\_regressione}\SpecialCharTok{$}\NormalTok{statistic, }\DecValTok{2}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## F-statistic: 66.64
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# p{-}value del test F}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"p{-}value:"}\NormalTok{, }\FunctionTok{format.pval}\NormalTok{(statistiche\_modello\_regressione}\SpecialCharTok{$}\NormalTok{p.value), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## p-value: < 2.22e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Gradi di libertà: }
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Gradi di libertà:"}\NormalTok{, statistiche\_modello\_regressione}\SpecialCharTok{$}\NormalTok{df, }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Gradi di libertà: 19
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# CONCLUSIONI:}
+\CommentTok{\# Le statistiche del modello confermano che, pur essendo statisticamente significativo, ha una capacità}
+\CommentTok{\# predittiva molto limitata. L\textquotesingle{}R{-}squared di 0.035 indica che il modello spiega solo il 3.5\% della variazione}
+\CommentTok{\# nella soddisfazione di vita, lasciando il 96.5\% non spiegato dalle variabili demografiche.}
+\CommentTok{\# L\textquotesingle{}R{-}squared aggiustato (0.0345) è molto simile all\textquotesingle{}R{-}squared normale (0.035), il che significa che tutte }
+\CommentTok{\# le variabili incluse nel modello sono utili e non si è aggiunto variabili che peggiorano le predizioni.}
+\CommentTok{\# L\textquotesingle{}F{-}statistic (66.64) è decisamente elevato e il p{-}value praticamente nullo (\textless{} 2.22e{-}16) dimostrano che il}
+\CommentTok{\# modello è statisticamente significativo; pertanto, le relazioni osservate non sono dovute al caso.}
+\CommentTok{\# Tuttavia, la bassa capacità esplicativa suggerisce che le caratteristiche demografiche, pur influenzando}
+\CommentTok{\# statisticamente la soddisfazione di vita, non sono i fattori principali che determinano il benessere}
+\CommentTok{\# individuale. Altri elementi non misurati nel modello hanno un peso nettamente maggiore nella }
+\CommentTok{\# determinazione della soddisfazione di vita.}
+\end{Highlighting}
+\end{Shaded}
+
+\section{4. GRAFICO COEFFICIENTI
+SIGNIFICATIVI}\label{grafico-coefficienti-significativi}
+
+\section{Il grafico a barre visualizza esclusivamente i coefficienti
+statisticamente significativi del
+modello}\label{il-grafico-a-barre-visualizza-esclusivamente-i-coefficienti-statisticamente-significativi-del-modello}
+
+\section{di regressione, facilitando l'interpretazione dei risultati
+principali. Pertanto, nel grafico sono
+presenti}\label{di-regressione-facilitando-linterpretazione-dei-risultati-principali.-pertanto-nel-grafico-sono-presenti}
+
+\section{solo variabili con p-value \textless{} 0.05; ciò al fine di
+evitare di inserire delle variabili che non
+possono}\label{solo-variabili-con-p-value-0.05-ciuxf2-al-fine-di-evitare-di-inserire-delle-variabili-che-non-possono}
+
+\section{assicurare un risultato attendibile. Grazie alla
+rappresentazione grafica è possibile
+avere}\label{assicurare-un-risultato-attendibile.-grazie-alla-rappresentazione-grafica-uxe8-possibile-avere}
+
+\section{un'interpretazione immediata e intuitiva, permettendo di
+identificare agevolmente direzione e
+intensità}\label{uninterpretazione-immediata-e-intuitiva-permettendo-di-identificare-agevolmente-direzione-e-intensituxe0}
+
+\section{degli effetti statisticamente
+rilevanti.}\label{degli-effetti-statisticamente-rilevanti.}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Estrazione dei coefficienti del modello in formato tabella}
+\NormalTok{coefficienti }\OtherTok{\textless{}{-}} \FunctionTok{tidy}\NormalTok{(modello\_regressione) }\CommentTok{\#converte i risultati in una tabella ordinata e leggibile}
+
+\CommentTok{\# Applicazione di un filtro per mostrare solo variabili statisticamente significative}
+\NormalTok{significativi }\OtherTok{\textless{}{-}}\NormalTok{ coefficienti[coefficienti}\SpecialCharTok{$}\NormalTok{p.value }\SpecialCharTok{\textless{}} \FloatTok{0.05} \SpecialCharTok{\&} 
+\NormalTok{                             coefficienti}\SpecialCharTok{$}\NormalTok{term }\SpecialCharTok{!=} \StringTok{"(Intercept)"}\NormalTok{, ] }\CommentTok{\#esclude l\textquotesingle{}intercetta}
+
+\CommentTok{\# Creazione del grafico a barre orizzontali}
+  \FunctionTok{ggplot}\NormalTok{(significativi, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =} \FunctionTok{reorder}\NormalTok{(term, estimate), }\AttributeTok{y =}\NormalTok{ estimate)) }\SpecialCharTok{+} 
+  
+  \CommentTok{\# Barre colorate: verde per i positivi, rosso per i negativi}
+  \FunctionTok{geom\_bar}\NormalTok{(}\AttributeTok{stat =} \StringTok{"identity"}\NormalTok{, }\AttributeTok{fill =} \FunctionTok{ifelse}\NormalTok{(significativi}\SpecialCharTok{$}\NormalTok{estimate }\SpecialCharTok{\textgreater{}} \DecValTok{0}\NormalTok{, }\StringTok{"green"}\NormalTok{, }\StringTok{"red"}\NormalTok{)) }\SpecialCharTok{+}
+  
+  
+  \FunctionTok{coord\_flip}\NormalTok{() }\SpecialCharTok{+}  \CommentTok{\#ruota il grafico per migliorare la leggibilità}
+    
+  
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Coefficienti Significativi del Modello di Regressione"}\NormalTok{,}
+       \AttributeTok{x =} \StringTok{"Variabili"}\NormalTok{, }
+       \AttributeTok{y =} \StringTok{"Coefficiente"}\NormalTok{) }\SpecialCharTok{+}
+  
+  \CommentTok{\# Linea di riferimento sullo zero per distinguere effetti positivi e negativi}
+  \FunctionTok{geom\_hline}\NormalTok{(}\AttributeTok{yintercept =} \DecValTok{0}\NormalTok{, }\AttributeTok{linetype =} \StringTok{"dashed"}\NormalTok{) }\SpecialCharTok{+}
+  
+
+  \FunctionTok{theme\_minimal}\NormalTok{() }
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{CODICE-UNITO-R_files/figure-latex/unnamed-chunk-12-1.pdf}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# CONCLUSIONI:}
+\CommentTok{\# Nel grafico dei coefficienti significativi emerge un quadro netto dove solamente due fattori aumentano la}
+\CommentTok{\# soddisfazione: essere sposati o conviventi mostra l\textquotesingle{}effetto positivo più forte (+0.38 punti), seguito}
+\CommentTok{\# dall\textquotesingle{}essere separati o divorziati (+0.08 punti). Tutti gli altri fattori riducono la soddisfazione. L\textquotesingle{}età}
+\CommentTok{\# mostra un effetto negativo progressivo molto evidente, con le barre che aumentano costantemente di intesità \# con l\textquotesingle{}avanzamento dell\textquotesingle{}età. La condizione lavorativa evidenzia forti disparità: essere disoccupati}
+\CommentTok{\# rappresenta il secondo fattore più penalizzante ({-}0.55 punti), mentre gli inattivi subiscono un impatto}
+\CommentTok{\# moderato ({-}0.21 punti).Per quanto concerne l\textquotesingle{}istruzione si nota come chi ha la licenza elementare o nessun}
+\CommentTok{\# titolo presenta il maggiore impatto negativo ({-}0.26 punti). Infine, le differenze di genere sono minime,}
+\CommentTok{\# con le donne leggermente svantaggiate ({-}0.11 punti). Si vuole far notare come non compaiano nel grafico}
+\CommentTok{\# coloro che sono vedovi; ciò avviene perché il coefficiente è troppo piccolo (+0,029) rispetto all\textquotesingle{}errore}
+\CommentTok{\# (0.041), il t{-}value è sotto la soglia di significatività, mentre il p{-}value ha una percentuale elevata}
+\CommentTok{\# (48,5\%) che dipenda dal caso. }
+\end{Highlighting}
+\end{Shaded}
+
+\section{5. BOXPLOT STATO CIVILE}\label{boxplot-stato-civile}
+
+\section{Il boxplot consente di confrontare la distribuzione della
+soddisfazione di vita con i diversi
+stati}\label{il-boxplot-consente-di-confrontare-la-distribuzione-della-soddisfazione-di-vita-con-i-diversi-stati}
+
+\section{civili, evidenziando differenze nelle tendenze centrali e
+variabilità tra i gruppi. Permette inoltre
+un}\label{civili-evidenziando-differenze-nelle-tendenze-centrali-e-variabilituxe0-tra-i-gruppi.-permette-inoltre-un}
+
+\section{confronto immediato tra i gruppi stessi, mostrando
+simultaneamente misure di tendenza centrale, dispersione \# e presenza
+di valori estremi. La sovrapposizione di media e mediana fornisce
+indicazioni sulla
+simmetria}\label{confronto-immediato-tra-i-gruppi-stessi-mostrando-simultaneamente-misure-di-tendenza-centrale-dispersione-e-presenza-di-valori-estremi.-la-sovrapposizione-di-media-e-mediana-fornisce-indicazioni-sulla-simmetria}
+
+\section{della distribuzione: quando coincidono la distribuzione è
+approssimativamente simmetrica, mentre
+delle}\label{della-distribuzione-quando-coincidono-la-distribuzione-uxe8-approssimativamente-simmetrica-mentre-delle}
+
+\section{discrepanze indicano asimmetria. Il grafico consente di
+identificare quale stato civile ha
+livelli}\label{discrepanze-indicano-asimmetria.-il-grafico-consente-di-identificare-quale-stato-civile-ha-livelli}
+
+\section{più elevati di benessere e di osservare la variabilità interna
+a ciascun gruppo. Inoltre, il
+boxplot}\label{piuxf9-elevati-di-benessere-e-di-osservare-la-variabilituxe0-interna-a-ciascun-gruppo.-inoltre-il-boxplot}
+
+\section{consente di comprendere se, anche dal punto di vista visivo, si
+conferma quanto constatato nel
+modello}\label{consente-di-comprendere-se-anche-dal-punto-di-vista-visivo-si-conferma-quanto-constatato-nel-modello}
+
+\section{di regressione.}\label{di-regressione.}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Creazione del boxplot per confronto tra Soddisfazione Vita e Stato Civile }
+\FunctionTok{ggplot}\NormalTok{(dati\_completi, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Stato\_civile, }
+                          \AttributeTok{y =}\NormalTok{ Soddisfazione\_vita, }
+                          \AttributeTok{fill =}\NormalTok{ Stato\_civile)) }\SpecialCharTok{+} \CommentTok{\#ogni gruppo ha un colore differente}
+  
+  
+  \CommentTok{\# Boxplot per ogni gruppo di stato civile}
+  \FunctionTok{geom\_boxplot}\NormalTok{()}\SpecialCharTok{+}
+  
+  
+  \CommentTok{\# Aggiunge al grafico sia la mediana (linea nera) che la media (punto bianco)}
+  \FunctionTok{stat\_summary}\NormalTok{(}\AttributeTok{fun =}\NormalTok{ mean, }
+               \AttributeTok{geom =} \StringTok{"point"}\NormalTok{, }
+               \AttributeTok{shape =} \DecValTok{23}\NormalTok{, }\CommentTok{\#forma a diamante}
+               \AttributeTok{size =} \DecValTok{3}\NormalTok{, }\CommentTok{\#dimensione media}
+               \AttributeTok{fill =} \StringTok{"white"} \CommentTok{\#colore del punto}
+\NormalTok{               ) }\SpecialCharTok{+} 
+  
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Soddisfazione di Vita per Stato Civile"}\NormalTok{,}
+       \AttributeTok{subtitle =} \StringTok{"I coniugati mostrano maggiore soddisfazione"}\NormalTok{,}
+       \AttributeTok{x =} \StringTok{"Stato Civile"}\NormalTok{, }
+       \AttributeTok{y =} \StringTok{"Soddisfazione (0{-}10)"}
+\NormalTok{       ) }\SpecialCharTok{+}
+  
+  \CommentTok{\# Formattazione per una migliore leggibilità}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}
+    \AttributeTok{axis.text.x =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{angle =} \DecValTok{45}\NormalTok{, }\AttributeTok{hjust =} \DecValTok{1}\NormalTok{), }\CommentTok{\# hjust allinea il testo }
+        \AttributeTok{legend.position =} \StringTok{"none"} \CommentTok{\# Nasconde la legenda}
+\NormalTok{    )}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{CODICE-UNITO-R_files/figure-latex/unnamed-chunk-13-1.pdf}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+  \CommentTok{\# Statistiche descrittive}
+\NormalTok{  dati\_completi }\SpecialCharTok{\%\textgreater{}\%}
+   \FunctionTok{group\_by}\NormalTok{(Stato\_civile) }\SpecialCharTok{\%\textgreater{}\%}
+   \FunctionTok{summarise}\NormalTok{(}
+     \AttributeTok{n =} \FunctionTok{n}\NormalTok{(),}
+     \AttributeTok{media =} \FunctionTok{round}\NormalTok{(}\FunctionTok{mean}\NormalTok{(Soddisfazione\_vita, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{), }\DecValTok{2}\NormalTok{),       }\CommentTok{\#na.rm = TRUE rimuove eventuali missing }
+     \AttributeTok{mediana =} \FunctionTok{round}\NormalTok{(}\FunctionTok{median}\NormalTok{(Soddisfazione\_vita, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{), }\DecValTok{2}\NormalTok{),}
+     \AttributeTok{q1 =} \FunctionTok{round}\NormalTok{(}\FunctionTok{quantile}\NormalTok{(Soddisfazione\_vita, }\FloatTok{0.25}\NormalTok{, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{), }\DecValTok{2}\NormalTok{),}
+     \AttributeTok{q3 =} \FunctionTok{round}\NormalTok{(}\FunctionTok{quantile}\NormalTok{(Soddisfazione\_vita, }\FloatTok{0.75}\NormalTok{, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{), }\DecValTok{2}\NormalTok{),}
+     \AttributeTok{dev\_std =} \FunctionTok{round}\NormalTok{(}\FunctionTok{sd}\NormalTok{(Soddisfazione\_vita, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{), }\DecValTok{2}\NormalTok{)}
+\NormalTok{  )}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 4 x 7
+##   Stato_civile                  n media mediana    q1    q3 dev_std
+##   <fct>                     <int> <dbl>   <dbl> <dbl> <dbl>   <dbl>
+## 1 Celibe/Nubile             11888  7.24       7     6     8    1.62
+## 2 Coniugato/a convivente    16601  7.35       8     7     8    1.57
+## 3 Separato/a o divorziato/a  3120  7.06       7     6     8    1.7 
+## 4 Vedovo/a                   3340  6.76       7     6     8    1.82
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# CONCLUSIONI:}
+\CommentTok{\# Il boxplot e le statistiche descrittive confermano i risultati del modello di regressione. I coniugati/}
+\CommentTok{\# conviventi mostrano la soddisfazione più elevata (mediana 8 e media 7.35) e la minore variabilità}
+\CommentTok{\# (dev.std 1.57). Ciò convalida quanto rinvenuto nel modello, dove questa categoria aveva il coefficiente}
+\CommentTok{\# positivo più forte della regressione (+0.38). La distribuzione compatta nella parte alta della scala indica}
+\CommentTok{\# come il matrimonio/convivenza rappresenti un fattore importante per il benessere della persona.}
+\CommentTok{\# Per quanto riguarda invece il gruppo di riferimento del modello, ovvero i celibi/nubili, presentano valori}
+\CommentTok{\# intermedi (mediana 7 e media 7.24), fungendo appunto da baseline per i confronti. I separati/divorziati}
+\CommentTok{\# presentano una soddisfazione media leggermente inferiore rispetto ai celibi, ma nella regressione avevano}
+\CommentTok{\# un coefficiente positivo (+0.08). Ciò è possibile in quanto nel modello rientrano anche altre variabili;}
+\CommentTok{\# pertanto, a parità di altre caratteristiche, essere in questa categoria in realtà ha un lieve effetto}
+\CommentTok{\# positivo rispetto all\textquotesingle{}essere single. I vedovi mostrano la soddisfazione mediamente più bassa (6.76) e una}
+\CommentTok{\# maggiore variabilità (1.82). Però, analizzando il coefficiente quasi nullo si può evincere come questa }
+\CommentTok{\# differenza sia principalmente legata all\textquotesingle{}età avanzata piuttosto che dalla categoria stessa. In conclusione, \# questa analisi conferma che essere in coppia rappresenta il fattore più influente tra le variabili di stato}
+\CommentTok{\# civile per quanto riguarda la soddisfazione di vita, avvalorando pertanto il suo impatto significativo}
+\CommentTok{\# mostrato nel modello di regressione.}
+\end{Highlighting}
+\end{Shaded}
+
+\section{6. BOXPLOT CONDIZIONE
+PROFESSIONALE}\label{boxplot-condizione-professionale}
+
+\section{L'analisi della distribuzione della soddisfazione di vita per
+condizione professionale permette
+di}\label{lanalisi-della-distribuzione-della-soddisfazione-di-vita-per-condizione-professionale-permette-di}
+
+\section{esaminare l'associazione tra status lavorativo e benessere
+individuale, considerando le
+implicazioni}\label{esaminare-lassociazione-tra-status-lavorativo-e-benessere-individuale-considerando-le-implicazioni}
+
+\section{socio-economiche delle diverse posizioni occupazionali. Il
+boxplot consente di evidenziare
+eventuali}\label{socio-economiche-delle-diverse-posizioni-occupazionali.-il-boxplot-consente-di-evidenziare-eventuali}
+
+\section{differenze significative nel benessere tra occupati,
+disoccupati e inattivi, constatandone
+anche}\label{differenze-significative-nel-benessere-tra-occupati-disoccupati-e-inattivi-constatandone-anche}
+
+\section{l'intensità. La visualizzazione grafica consente di
+identificare quale condizione professionale si
+associa}\label{lintensituxe0.-la-visualizzazione-grafica-consente-di-identificare-quale-condizione-professionale-si-associa}
+
+\section{ai livelli più elevati di soddisfazione e di osservare
+l'eterogeneità delle risposte all'interno
+di}\label{ai-livelli-piuxf9-elevati-di-soddisfazione-e-di-osservare-leterogeneituxe0-delle-risposte-allinterno-di}
+
+\section{ciascuna categoria lavorativa. Inoltre, il boxplot consente di
+comprendere se, anche dal punto di
+vista}\label{ciascuna-categoria-lavorativa.-inoltre-il-boxplot-consente-di-comprendere-se-anche-dal-punto-di-vista}
+
+\section{visivo, si conferma quanto constatato nel modello di
+regressione.}\label{visivo-si-conferma-quanto-constatato-nel-modello-di-regressione.}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Creazione del boxplot per condizione professionale}
+\FunctionTok{ggplot}\NormalTok{(dati\_completi, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Condizione\_professionale, }
+                          \AttributeTok{y =}\NormalTok{ Soddisfazione\_vita, }
+                          \AttributeTok{fill =}\NormalTok{ Condizione\_professionale)) }\SpecialCharTok{+}
+  
+  
+  \CommentTok{\# Boxplot per visualizzare la distribuzione di ogni gruppo}
+  \FunctionTok{geom\_boxplot}\NormalTok{() }\SpecialCharTok{+}
+  
+  
+  \FunctionTok{stat\_summary}\NormalTok{(}
+    \AttributeTok{fun =}\NormalTok{ mean, }
+    \AttributeTok{geom =} \StringTok{"point"}\NormalTok{, }
+    \AttributeTok{shape =} \DecValTok{23}\NormalTok{, }
+    \AttributeTok{size =} \DecValTok{3}\NormalTok{, }
+    \AttributeTok{fill =} \StringTok{"white"}\NormalTok{) }\SpecialCharTok{+}
+  
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Soddisfazione di Vita per Condizione Professionale"}\NormalTok{,}
+       \AttributeTok{subtitle =} \StringTok{"La disoccupazione riduce significativamente la soddisfazione"}\NormalTok{,}
+       \AttributeTok{x =} \StringTok{"Condizione Professionale"}\NormalTok{, }
+       \AttributeTok{y =} \StringTok{"Soddisfazione (0{-}10)"}\NormalTok{) }\SpecialCharTok{+}
+  
+  
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}
+    \AttributeTok{axis.text.x =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{angle =} \DecValTok{45}\NormalTok{, }\AttributeTok{hjust =} \DecValTok{1}\NormalTok{), }
+    \AttributeTok{legend.position =} \StringTok{"none"}
+\NormalTok{    )}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{CODICE-UNITO-R_files/figure-latex/unnamed-chunk-14-1.pdf}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Statistiche descrittive }
+\NormalTok{dati\_completi }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(Condizione\_professionale) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarise}\NormalTok{(}
+    \AttributeTok{n =} \FunctionTok{n}\NormalTok{(),}
+    \AttributeTok{media =} \FunctionTok{round}\NormalTok{(}\FunctionTok{mean}\NormalTok{(Soddisfazione\_vita, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{), }\DecValTok{2}\NormalTok{),}
+    \AttributeTok{mediana =} \FunctionTok{round}\NormalTok{(}\FunctionTok{median}\NormalTok{(Soddisfazione\_vita, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{), }\DecValTok{2}\NormalTok{),}
+    \AttributeTok{q1 =} \FunctionTok{round}\NormalTok{(}\FunctionTok{quantile}\NormalTok{(Soddisfazione\_vita, }\FloatTok{0.25}\NormalTok{, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{), }\DecValTok{2}\NormalTok{),}
+    \AttributeTok{q3 =} \FunctionTok{round}\NormalTok{(}\FunctionTok{quantile}\NormalTok{(Soddisfazione\_vita, }\FloatTok{0.75}\NormalTok{, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{), }\DecValTok{2}\NormalTok{),}
+    \AttributeTok{dev\_std =} \FunctionTok{round}\NormalTok{(}\FunctionTok{sd}\NormalTok{(Soddisfazione\_vita, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{), }\DecValTok{2}\NormalTok{),}
+    \AttributeTok{min =} \FunctionTok{round}\NormalTok{(}\FunctionTok{min}\NormalTok{(Soddisfazione\_vita, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{), }\DecValTok{2}\NormalTok{),}
+    \AttributeTok{max =} \FunctionTok{round}\NormalTok{(}\FunctionTok{max}\NormalTok{(Soddisfazione\_vita, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{), }\DecValTok{2}\NormalTok{)}
+\NormalTok{  )}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 3 x 9
+##   Condizione_professionale     n media mediana    q1    q3 dev_std   min   max
+##   <fct>                    <int> <dbl>   <dbl> <dbl> <dbl>   <dbl> <dbl> <dbl>
+## 1 Occupato                 14996  7.4        8     7     8    1.46     0    10
+## 2 In cerca di lavoro        3057  6.82       7     6     8    1.89     0    10
+## 3 Inattivo                 16896  7.15       7     6     8    1.71     0    10
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# CONCLUSIONI:}
+\CommentTok{\# Il boxplot e le statistiche descrittive confermano i risultati del modello di regressione. Gli occupati,}
+\CommentTok{\# gruppo di riferimento nel modello, presentano la soddisfazione più elevata (mediana 8 e media 7.40), e la}
+\CommentTok{\# minore variabilità (dev.std 1.46). Dal grafico si evince inoltre una distribuzione concentrata nella parte}
+\CommentTok{\# superiore della scala. I disoccupati hanno invece la soddisfazione più bassa in media (6.82), confermando}
+\CommentTok{\# pertanto il coefficiente negativo della regressione ({-}0.55). Nonostante presentino la medesima mediana}
+\CommentTok{\# degli inattivi (7), la media più bassa a causa degli outliers e la maggiore variabilità indicano una}
+\CommentTok{\# distribuzione più accentuata verso i valori bassi. Gli inattivi sono in una posizione intermedia, }
+\CommentTok{\# coerente con il coefficiente negativo moderato presente nella regressione ({-}0.21). A conferma di ciò anche}
+\CommentTok{\# una media superiore rispetto ai disoccupati, così come a una minore deviazione standard. }
+\CommentTok{\# Questo risultato sottolinea l\textquotesingle{}importanza dell\textquotesingle{}occupazione per la stabilità economica e il benessere }
+\CommentTok{\# psicologico, evidenziando come la disoccupazione e l\textquotesingle{}inattività rappresentino invece un fattore negativo}
+\CommentTok{\# significativo.}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{PARTE III: TEST CHI QUADRO E
+ANOVA}\label{parte-iii-test-chi-quadro-e-anova}
+
+\section{1. PREPARAZIONE DATI PER ANALISI
+BIVARIATA}\label{preparazione-dati-per-analisi-bivariata}
+
+\section{La preparazione dei dati prevede la creazione di un dataset
+specifico per l'analisi della relazione
+tra}\label{la-preparazione-dei-dati-prevede-la-creazione-di-un-dataset-specifico-per-lanalisi-della-relazione-tra}
+
+\section{soddisfazione di vita e qualità delle relazioni di amicizia. Il
+processo include la pulizia delle
+variabili}\label{soddisfazione-di-vita-e-qualituxe0-delle-relazioni-di-amicizia.-il-processo-include-la-pulizia-delle-variabili}
+
+\section{attraverso la rimozione dei valori non validi, la conversione
+in formati appropriati per diversi
+test}\label{attraverso-la-rimozione-dei-valori-non-validi-la-conversione-in-formati-appropriati-per-diversi-test}
+
+\section{statistici e la categorizzazione della variabile dipendente. Le
+trasformazioni effettuate sono al fine
+di}\label{statistici-e-la-categorizzazione-della-variabile-dipendente.-le-trasformazioni-effettuate-sono-al-fine-di}
+
+\section{condurre sia analisi parametriche (ANOVA) che non parametriche
+(Chi-quadro). Infine, l'eliminazione
+delle}\label{condurre-sia-analisi-parametriche-anova-che-non-parametriche-chi-quadro.-infine-leliminazione-delle}
+
+\section{osservazioni incomplete assicura la validità e l'affidabilità
+dei risultati
+statistici.}\label{osservazioni-incomplete-assicura-la-validituxe0-e-laffidabilituxe0-dei-risultati-statistici.}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{preparazione\_data }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(AVQ\_Microdati\_2023) \{}
+\NormalTok{  base\_pulita }\OtherTok{\textless{}{-}}\NormalTok{ AVQ\_Microdati\_2023 }\SpecialCharTok{\%\textgreater{}\%}
+    
+    \CommentTok{\# Conversione e pulizia soddisfazione relazioni di amicizia}
+    \FunctionTok{transmute}\NormalTok{(}
+      \AttributeTok{RELAM\_num =} \FunctionTok{ifelse}\NormalTok{(}\FunctionTok{as.numeric}\NormalTok{(RELAM) }\SpecialCharTok{\%in\%} \FunctionTok{c}\NormalTok{(}\DecValTok{8}\NormalTok{, }\DecValTok{9}\NormalTok{), }\ConstantTok{NA}\NormalTok{, }\FunctionTok{as.numeric}\NormalTok{(RELAM)),}
+      
+      \CommentTok{\# Conversione soddisfazione di vita}
+      \AttributeTok{VOTOVI\_num =} \FunctionTok{as.numeric}\NormalTok{(VOTOVI),}
+      
+      \CommentTok{\# Categorizzazione soddisfazione vita in livelli ordinati}
+      \AttributeTok{VOTOVI\_CAT =} \FunctionTok{cut}\NormalTok{(VOTOVI\_num, }
+                       \AttributeTok{breaks =} \FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{, }\DecValTok{4}\NormalTok{, }\DecValTok{6}\NormalTok{, }\DecValTok{8}\NormalTok{, }\DecValTok{10}\NormalTok{), }
+                       \AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"Bassa"}\NormalTok{, }\StringTok{"Media{-}bassa"}\NormalTok{, }\StringTok{"Media{-}alta"}\NormalTok{, }\StringTok{"Alta"}\NormalTok{),}
+                       \AttributeTok{include.lowest =} \ConstantTok{TRUE}\NormalTok{,}
+                       \AttributeTok{ordered =} \ConstantTok{TRUE}
+\NormalTok{                       ),}
+      
+      \CommentTok{\# Creazione fattore ordinato per soddisfazione relazioni}
+      \AttributeTok{Soddisf\_relazioni\_amici =} \FunctionTok{factor}\NormalTok{(RELAM\_num,}
+                                     \AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{4}\NormalTok{),}
+                                     \AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"Molto"}\NormalTok{, }\StringTok{"Abbastanza"}\NormalTok{, }\StringTok{"Poco"}\NormalTok{, }\StringTok{"Per niente"}\NormalTok{),}
+                                     \AttributeTok{ordered =} \ConstantTok{TRUE}
+\NormalTok{                                     ),}
+
+\NormalTok{    ) }\SpecialCharTok{\%\textgreater{}\%}
+    
+    \CommentTok{\# Rimozione osservazioni con dati mancanti}
+    \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(VOTOVI\_CAT) }\SpecialCharTok{\&} \SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(Soddisf\_relazioni\_amici))}
+  
+  \FunctionTok{return}\NormalTok{(base\_pulita)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\section{2. TEST DEL CHI-QUADRO}\label{test-del-chi-quadro}
+
+\section{Il test del Chi-quadro viene utilizzato per verificare se
+esiste un'associazione
+statisticamente}\label{il-test-del-chi-quadro-viene-utilizzato-per-verificare-se-esiste-unassociazione-statisticamente}
+
+\section{significativa tra soddisfazione di vita e la qualità delle
+relazioni d'amicizia. Si costruisce
+una}\label{significativa-tra-soddisfazione-di-vita-e-la-qualituxe0-delle-relazioni-damicizia.-si-costruisce-una}
+
+\section{tabella di contingenza che consente l'incrocio tra le frequenze
+osservate delle due
+variabili}\label{tabella-di-contingenza-che-consente-lincrocio-tra-le-frequenze-osservate-delle-due-variabili}
+
+\section{categoriali. Le ipotesi statistiche
+sono:}\label{categoriali.-le-ipotesi-statistiche-sono}
+
+\section{H0: Le variabili sono indipendenti (pertanto non c'è alcuna
+associazione)}\label{h0-le-variabili-sono-indipendenti-pertanto-non-cuxe8-alcuna-associazione}
+
+\section{H1: Esiste un'associazione significativa tra le
+variabili}\label{h1-esiste-unassociazione-significativa-tra-le-variabili}
+
+\section{La metodologia prevede dapprima il calcolo delle frequenze
+attese sotto l'ipotesi nulla, a
+seguire}\label{la-metodologia-prevede-dapprima-il-calcolo-delle-frequenze-attese-sotto-lipotesi-nulla-a-seguire}
+
+\section{il confronto con le frequenze osservate, infine, l'analisi
+delle proporzioni per identificare
+la}\label{il-confronto-con-le-frequenze-osservate-infine-lanalisi-delle-proporzioni-per-identificare-la}
+
+\section{direzione dell'associazione. Il p-value determina la
+significatività statistica della
+relazione.}\label{direzione-dellassociazione.-il-p-value-determina-la-significativituxe0-statistica-della-relazione.}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# }\AlertTok{TEST}\CommentTok{ DEL CHI{-}QUADRO}
+
+\CommentTok{\# Preparazione dati puliti per l\textquotesingle{}analisi}
+\NormalTok{dati\_puliti }\OtherTok{\textless{}{-}} \FunctionTok{preparazione\_data}\NormalTok{(AVQ\_Microdati\_2023)}
+
+
+\CommentTok{\# Creazione tabella di contingenza}
+\NormalTok{tabella\_contingenza }\OtherTok{\textless{}{-}} \FunctionTok{table}\NormalTok{(dati\_puliti}\SpecialCharTok{$}\NormalTok{VOTOVI\_CAT, dati\_puliti}\SpecialCharTok{$}\NormalTok{Soddisf\_relazioni\_amici)}
+
+\CommentTok{\# Analisi esplorativa}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"=== ANALISI CHI{-}QUADRO ===}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## === ANALISI CHI-QUADRO ===
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(}\StringTok{"Tabella di contingenza (VOTOVI\_CAT x Soddisfazione relazioni amici):"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "Tabella di contingenza (VOTOVI_CAT x Soddisfazione relazioni amici):"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(tabella\_contingenza)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##              
+##               Molto Abbastanza  Poco Per niente
+##   Bassa         167        606   545        389
+##   Media-bassa   842       4701  1857        437
+##   Media-alta   4633      13291  2218        351
+##   Alta         2770       3085   369        116
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{Proporzioni per riga:}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Proporzioni per riga:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(}\FunctionTok{round}\NormalTok{(}\FunctionTok{prop.table}\NormalTok{(tabella\_contingenza, }\AttributeTok{margin =} \DecValTok{1}\NormalTok{), }\DecValTok{3}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##              
+##               Molto Abbastanza  Poco Per niente
+##   Bassa       0.098      0.355 0.319      0.228
+##   Media-bassa 0.107      0.600 0.237      0.056
+##   Media-alta  0.226      0.649 0.108      0.017
+##   Alta        0.437      0.487 0.058      0.018
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{Proporzioni per colonna:}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Proporzioni per colonna:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(}\FunctionTok{round}\NormalTok{(}\FunctionTok{prop.table}\NormalTok{(tabella\_contingenza, }\AttributeTok{margin =} \DecValTok{2}\NormalTok{), }\DecValTok{3}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##              
+##               Molto Abbastanza  Poco Per niente
+##   Bassa       0.020      0.028 0.109      0.301
+##   Media-bassa 0.100      0.217 0.372      0.338
+##   Media-alta  0.551      0.613 0.445      0.271
+##   Alta        0.329      0.142 0.074      0.090
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Test statistico}
+\NormalTok{test\_chi\_quadro }\OtherTok{\textless{}{-}} \FunctionTok{chisq.test}\NormalTok{(tabella\_contingenza)}
+
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{Risultati del test del chi quadro:}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Risultati del test del chi quadro:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(test\_chi\_quadro)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Pearson's Chi-squared test
+## 
+## data:  tabella_contingenza
+## X-squared = 5712.2, df = 9, p-value < 2.2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Interpretazione dei risultati}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{=== INTERPRETAZIONE CHI{-}QUADRO ===}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## === INTERPRETAZIONE CHI-QUADRO ===
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Chi{-}quadro statistica:"}\NormalTok{, }\FunctionTok{round}\NormalTok{(test\_chi\_quadro}\SpecialCharTok{$}\NormalTok{statistic, }\DecValTok{3}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Chi-quadro statistica: 5712.194
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Gradi di libertà:"}\NormalTok{, test\_chi\_quadro}\SpecialCharTok{$}\NormalTok{parameter, }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Gradi di libertà: 9
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"P{-}value:"}\NormalTok{, }\FunctionTok{format}\NormalTok{(test\_chi\_quadro}\SpecialCharTok{$}\NormalTok{p.value, }\AttributeTok{scientific =} \ConstantTok{TRUE}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## P-value: 0e+00
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Valutazione significatività statistica }
+\ControlFlowTok{if}\NormalTok{ (test\_chi\_quadro}\SpecialCharTok{$}\NormalTok{p.value }\SpecialCharTok{\textless{}} \FloatTok{0.05}\NormalTok{) \{}
+  \FunctionTok{cat}\NormalTok{(}\StringTok{"CONCLUSIONE: C\textquotesingle{}è un\textquotesingle{}associazione statisticamente significativa tra soddisfazione vita e soddisfazione relazioni amici (p \textless{} 0.05)}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\NormalTok{\} }\ControlFlowTok{else}\NormalTok{ \{}
+  \FunctionTok{cat}\NormalTok{(}\StringTok{"CONCLUSIONE: Non c\textquotesingle{}è evidenza di associazione statisticamente significativa tra soddisfazione vita e soddisfazione relazioni amici (p \textgreater{}= 0.05)}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## CONCLUSIONE: C'è un'associazione statisticamente significativa tra soddisfazione vita e soddisfazione relazioni amici (p < 0.05)
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# CONCLUSIONI:  }
+\CommentTok{\# Il test del Chi{-}quadro mostra una relazione fortemente significativa (χ² = 5712.2, df = 9, p \textless{} 2.2e{-}16)}
+\CommentTok{\# tra qualità delle relazioni amicali e soddisfazione di vita. Dall\textquotesingle{}analisi delle proporzioni si evince come }
+\CommentTok{\# la soddisfazione nelle amicizie sia progressivamente associata a maggiori livelli di benessere: chi ha alta}
+\CommentTok{\# soddisfazione di vita è "molto soddisfatto" delle amicizie nel 43.7\% dei casi, mentre chi ha "bassa    }
+\CommentTok{\# soddisfazione" solo nel 9.8\%. Infine, coloro che sono "per niente soddisfatti" ricadono nelle categorie di}
+\CommentTok{\# soddisfazione bassa (30.1\%) o media{-}bassa (33.8\%). Questi risultati confermano l\textquotesingle{}esistenza di un forte  }
+\CommentTok{\# legame bidirezionale tra qualità delle relazioni interpersonali e benessere individuale.}
+\CommentTok{\# Si rinviene come le amicizie soddisfacenti costituiscano un elemento fondamentale per la soddisfazione di }
+\CommentTok{\# vita.}
+\end{Highlighting}
+\end{Shaded}
+
+\section{3. VERIFICA DELLE ASSUNZIONI STATISTICHE PER IL TEST
+CHI-QUADRO}\label{verifica-delle-assunzioni-statistiche-per-il-test-chi-quadro}
+
+\section{La validità del test del Chi-quadro dipende dal rispetto di
+determinate assunzioni, relative
+alle}\label{la-validituxe0-del-test-del-chi-quadro-dipende-dal-rispetto-di-determinate-assunzioni-relative-alle}
+
+\section{frequenze attese nelle celle della tabella di contingenza. La
+verifica di queste condizioni è
+fondamentale}\label{frequenze-attese-nelle-celle-della-tabella-di-contingenza.-la-verifica-di-queste-condizioni-uxe8-fondamentale}
+
+\section{per garantire l'affidabilità dell'inferenza statistica. I
+criteri di validità
+sono:}\label{per-garantire-laffidabilituxe0-dellinferenza-statistica.-i-criteri-di-validituxe0-sono}
+
+\section{- Almeno l'80\% delle celle deve presentare frequenza attesa ≥
+5}\label{almeno-l80-delle-celle-deve-presentare-frequenza-attesa-5}
+
+\section{- Nessuna cella dovrebbe avere frequenza attesa \textless{}
+1}\label{nessuna-cella-dovrebbe-avere-frequenza-attesa-1}
+
+\section{La violazione di queste assunzioni compromette l'accuratezza
+del test. L'analisi delle frequenze
+attese}\label{la-violazione-di-queste-assunzioni-compromette-laccuratezza-del-test.-lanalisi-delle-frequenze-attese}
+
+\section{costituisce dunque un passaggio imprescindibile per la
+validazione dei risultati. Durante la
+verifica}\label{costituisce-dunque-un-passaggio-imprescindibile-per-la-validazione-dei-risultati.-durante-la-verifica}
+
+\section{delle assunzione del test del Chi-quadro si controlla che le
+frequenze attese non abbiano valori
+bassi.}\label{delle-assunzione-del-test-del-chi-quadro-si-controlla-che-le-frequenze-attese-non-abbiano-valori-bassi.}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Verifica delle assunzioni del test del Chi{-}quadro}
+
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{Frequenze attese:}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Frequenze attese:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(}\FunctionTok{round}\NormalTok{(test\_chi\_quadro}\SpecialCharTok{$}\NormalTok{expected, }\DecValTok{2}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##              
+##                 Molto Abbastanza    Poco Per niente
+##   Bassa        394.74    1017.48  234.11      60.67
+##   Media-bassa 1812.27    4671.35 1074.82     278.56
+##   Media-alta  4738.90   12215.13 2810.56     728.41
+##   Alta        1466.09    3779.04  869.51     225.35
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Controllo validità delle frequenze attese (ovvero ≥ 5)}
+\NormalTok{frequenze\_basse }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{(test\_chi\_quadro}\SpecialCharTok{$}\NormalTok{expected }\SpecialCharTok{\textless{}} \DecValTok{5}\NormalTok{)}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{Celle con frequenza attesa \textless{} 5:"}\NormalTok{, frequenze\_basse, }\StringTok{"su"}\NormalTok{, }\FunctionTok{length}\NormalTok{(test\_chi\_quadro}\SpecialCharTok{$}\NormalTok{expected), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Celle con frequenza attesa < 5: 0 su 16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Valutazione affidabilità del test}
+\ControlFlowTok{if}\NormalTok{ (frequenze\_basse }\SpecialCharTok{\textgreater{}} \DecValTok{0}\NormalTok{) \{}
+  \FunctionTok{cat}\NormalTok{(}\StringTok{"ATTENZIONE: Alcune celle hanno frequenza attesa \textless{} 5. I risultati potrebbero non essere affidabili.}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+  \FunctionTok{cat}\NormalTok{(}\StringTok{"Considera l\textquotesingle{}uso del test esatto di Fisher o l\textquotesingle{}accorpamento di categorie.}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\NormalTok{\}}
+
+\CommentTok{\# COSA SI EVINCE DALLA TABELLA:}
+\CommentTok{\# Tutte le celle della tabella di contingenza presentano frequenze attese superiori a 5 }
+\CommentTok{\# (range: 60.67 {-} 12215.13), rispettando pienamente i criteri di validità del test di Pearson. }
+\CommentTok{\# I risultati del test Chi{-}quadro sono statisticamente affidabili, in quanto nessuna cella vìola}
+\CommentTok{\# l\textquotesingle{}assunzione. Non è pertanto necessario ricorrere a test alternativi o all\textquotesingle{}accorpamento di categorie.}
+\end{Highlighting}
+\end{Shaded}
+
+\section{4. ANALISI DELLA VARIANZA (ANOVA): Preparazione dati e
+statistiche
+descrittive}\label{analisi-della-varianza-anova-preparazione-dati-e-statistiche-descrittive}
+
+\section{L'analisi della varianza a una via viene impiegata per
+verificare l'esistenza di differenze
+statisticamente}\label{lanalisi-della-varianza-a-una-via-viene-impiegata-per-verificare-lesistenza-di-differenze-statisticamente}
+
+\section{significative nella soddisfazione di vita media tra i diversi
+livelli di soddisfazione delle
+relazioni}\label{significative-nella-soddisfazione-di-vita-media-tra-i-diversi-livelli-di-soddisfazione-delle-relazioni}
+
+\section{d'amicizia. Il test consente di confrontare simultaneamente le
+medie di più gruppi
+indipendenti.}\label{damicizia.-il-test-consente-di-confrontare-simultaneamente-le-medie-di-piuxf9-gruppi-indipendenti.}
+
+\section{Il modello prevede:}\label{il-modello-prevede}
+
+\section{- Variabile dipendente VOTOVI: soddisfazione di vita (scala
+continua
+0-10)}\label{variabile-dipendente-votovi-soddisfazione-di-vita-scala-continua-0-10}
+
+\section{- Variabile indipendente RELAM: soddisfazione relazioni amicali
+(4 categorie
+ordinali)}\label{variabile-indipendente-relam-soddisfazione-relazioni-amicali-4-categorie-ordinali}
+
+\section{- Confronto tra gruppi
+indipendenti}\label{confronto-tra-gruppi-indipendenti}
+
+\section{Le ipotesi statistiche
+sono:}\label{le-ipotesi-statistiche-sono}
+
+\section{H0: μ₁ = μ₂ = μ₃ = μ₄ (uguaglianza delle medie tra
+gruppi)}\label{h0-ux3bcux2081-ux3bcux2082-ux3bcux2083-ux3bcux2084-uguaglianza-delle-medie-tra-gruppi}
+
+\section{H1: Almeno una media differisce significativamente dalle
+altre}\label{h1-almeno-una-media-differisce-significativamente-dalle-altre}
+
+\section{La procedura prevede la preparazione dei dati mediante la
+rimozione dei valori mancanti,
+l'analisi}\label{la-procedura-prevede-la-preparazione-dei-dati-mediante-la-rimozione-dei-valori-mancanti-lanalisi}
+
+\section{esplorativa delle distribuzioni, la verifica delle assunzioni
+parametriche e l'esecuzione del test
+F.}\label{esplorativa-delle-distribuzioni-la-verifica-delle-assunzioni-parametriche-e-lesecuzione-del-test-f.}
+
+\section{L'interpretazione del p-value determina la significatività
+delle differenze osservate tra i
+gruppi.}\label{linterpretazione-del-p-value-determina-la-significativituxe0-delle-differenze-osservate-tra-i-gruppi.}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# PREPARAZIONE DATI PER ANOVA}
+
+\CommentTok{\# Conversione e pulizia variabili}
+\NormalTok{Soddisfazione\_vita }\OtherTok{=} \FunctionTok{as.numeric}\NormalTok{(AVQ\_Microdati\_2023}\SpecialCharTok{$}\NormalTok{VOTOVI)}
+\NormalTok{RELAM }\OtherTok{=}\NormalTok{ AVQ\_Microdati\_2023}\SpecialCharTok{$}\NormalTok{RELAM}
+
+\CommentTok{\# Filtro osservazioni valide (esclude NA e valori non validi 8,9)}
+\NormalTok{validi }\OtherTok{\textless{}{-}} \SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(Soddisfazione\_vita) }\SpecialCharTok{\&} \SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(RELAM) }\SpecialCharTok{\&}\NormalTok{ RELAM }\SpecialCharTok{\%in\%} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{4}\NormalTok{)}
+
+\NormalTok{Soddisfazione\_vita\_pulita }\OtherTok{\textless{}{-}}\NormalTok{ Soddisfazione\_vita[validi]}
+\NormalTok{RELAM\_pulito }\OtherTok{\textless{}{-}}\NormalTok{ RELAM[validi]}
+
+
+\CommentTok{\# Creazione fattore con etichette descrittive}
+\NormalTok{RELAM\_gruppo }\OtherTok{\textless{}{-}} \FunctionTok{factor}\NormalTok{(RELAM\_pulito, }
+                      \AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{4}\NormalTok{), }
+                      \AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"Molto"}\NormalTok{, }\StringTok{"Abbastanza"}\NormalTok{, }\StringTok{"Poco"}\NormalTok{, }\StringTok{"Per niente"}\NormalTok{)}
+\NormalTok{                      )}
+
+\CommentTok{\# Controllo numerosità campionaria per gruppo}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Numero di osservazioni per gruppo:}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Numero di osservazioni per gruppo:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{table}\NormalTok{(RELAM\_gruppo)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## RELAM_gruppo
+##      Molto Abbastanza       Poco Per niente 
+##       8412      21683       4989       1293
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# STATISTICHE DESCRITTIVE}
+
+\CommentTok{\# Creazione dataset per analisi}
+\NormalTok{dati\_per\_analisi }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
+  \AttributeTok{Soddisfazione\_vita =}\NormalTok{ Soddisfazione\_vita\_pulita,}
+  \AttributeTok{Gruppo =}\NormalTok{ RELAM\_gruppo}
+\NormalTok{)}
+
+\CommentTok{\# Calcolo statistiche per gruppo}
+\NormalTok{statistiche\_dplyr }\OtherTok{\textless{}{-}}\NormalTok{ dati\_per\_analisi }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(Gruppo) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarise}\NormalTok{(}
+    \AttributeTok{Media =} \FunctionTok{round}\NormalTok{(}\FunctionTok{mean}\NormalTok{(Soddisfazione\_vita), }\DecValTok{2}\NormalTok{),}
+    \AttributeTok{DevSt =} \FunctionTok{round}\NormalTok{(}\FunctionTok{sd}\NormalTok{(Soddisfazione\_vita), }\DecValTok{2}\NormalTok{),}
+    \AttributeTok{N =} \FunctionTok{n}\NormalTok{(),}
+    \AttributeTok{.groups =} \StringTok{\textquotesingle{}drop\textquotesingle{}}
+\NormalTok{  )}
+
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{Statistiche descrittive usando dplyr:}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Statistiche descrittive usando dplyr:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(statistiche\_dplyr)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 4 x 4
+##   Gruppo     Media DevSt     N
+##   <fct>      <dbl> <dbl> <int>
+## 1 Molto       7.93  1.44  8412
+## 2 Abbastanza  7.26  1.4  21683
+## 3 Poco        6.39  1.79  4989
+## 4 Per niente  5.34  2.71  1293
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Grafico sulla distribuzione della soddisfazione della vita per livello di relazioni tra amici}
+\FunctionTok{boxplot}\NormalTok{(Soddisfazione\_vita\_pulita }\SpecialCharTok{\textasciitilde{}}\NormalTok{ RELAM\_gruppo,}
+        \AttributeTok{main =} \StringTok{"Soddisfazione vita per soddisfazione relazioni amici"}\NormalTok{,}
+        \AttributeTok{xlab =} \StringTok{"Soddisfazione relazioni amici"}\NormalTok{, }
+        \AttributeTok{ylab =} \StringTok{"Soddisfazione vita"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{CODICE-UNITO-R_files/figure-latex/unnamed-chunk-18-1.pdf}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# CONCLUSIONI:}
+\CommentTok{\# I dati mostrano una distribuzione realistica, in quanto la maggioranza (21.683) è "abbastanza" soddisfatta}
+\CommentTok{\# delle amicizie. Le statistiche rivelano un chiaro pattern decrescente nelle medie (da 7.93 a 5.34) e}
+\CommentTok{\# crescente nelle deviazioni standard (da 1.44 a 2.71). Ciò suggerisce che una minore soddisfazione nelle}
+\CommentTok{\# amicizie si associa un più basso benessere una maggiore variabilità nelle risposte. Questi pattern }
+\CommentTok{\# preliminari evidenziano differenze sostanziali tra i gruppi, fornendo una solida base empirica per il  }
+\CommentTok{\# test ANOVA. }
+\end{Highlighting}
+\end{Shaded}
+
+\section{5. ESECUZIONE TEST ANOVA}\label{esecuzione-test-anova}
+
+\section{Il test ANOVA viene condotto per verificare l'esistenza di
+differenze significative nelle medie
+della}\label{il-test-anova-viene-condotto-per-verificare-lesistenza-di-differenze-significative-nelle-medie-della}
+
+\section{soddisfazione di vita tra i gruppi facenti parte le relazioni
+amicali. La statistica F misura se
+le}\label{soddisfazione-di-vita-tra-i-gruppi-facenti-parte-le-relazioni-amicali.-la-statistica-f-misura-se-le}
+
+\section{differenze tra i gruppi sono maggiori delle differenze casuali
+all'interno di ciascun gruppo. Il
+p-value}\label{differenze-tra-i-gruppi-sono-maggiori-delle-differenze-casuali-allinterno-di-ciascun-gruppo.-il-p-value}
+
+\section{indica quanto è probabile ottenere questi risultati per pura
+casualità; un valore p \textless{} 0.05
+suggerisce}\label{indica-quanto-uxe8-probabile-ottenere-questi-risultati-per-pura-casualituxe0-un-valore-p-0.05-suggerisce}
+
+\section{il rifiuto dell'ipotesi nulla, confermando l'esistenza di
+differenze statisticamente
+significative}\label{il-rifiuto-dellipotesi-nulla-confermando-lesistenza-di-differenze-statisticamente-significative}
+
+\section{tra almeno due gruppi. L'analisi ha l'obiettivo di verificare
+il legame tra qualità delle
+relazioni}\label{tra-almeno-due-gruppi.-lanalisi-ha-lobiettivo-di-verificare-il-legame-tra-qualituxe0-delle-relazioni}
+
+\section{amicali e il benessere personale, da cui si aspetta si possa
+evincere l'importanza della socialità
+per}\label{amicali-e-il-benessere-personale-da-cui-si-aspetta-si-possa-evincere-limportanza-della-socialituxe0-per}
+
+\section{la avere una vita
+soddisfacente.}\label{la-avere-una-vita-soddisfacente.}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{=== ANOVA ===}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## === ANOVA ===
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Modello Anova one way}
+\NormalTok{anova\_risultato }\OtherTok{\textless{}{-}} \FunctionTok{aov}\NormalTok{(Soddisfazione\_vita\_pulita }\SpecialCharTok{\textasciitilde{}}\NormalTok{ RELAM\_gruppo)}
+
+\CommentTok{\# Risultati del test}
+\FunctionTok{summary}\NormalTok{(anova\_risultato)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                 Df Sum Sq Mean Sq F value Pr(>F)    
+## RELAM_gruppo     3  12311    4104    1743 <2e-16 ***
+## Residuals    36373  85657       2                   
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# CONCLUSIONI}
+\CommentTok{\# L\textquotesingle{}analisi ANOVA ha mostrato un effetto statisticamente significativo del livello di soddisfazione nelle}
+\CommentTok{\# relazioni d\textquotesingle{}amicizia sulla soddisfazione di vita (F(3, 36373) = 1743, p \textless{} 2e{-}16). Il valore F molto }
+\CommentTok{\# elevato (1743) con 3 gradi di libertà per il fattore e 36373 per i residui indica delle differenze }
+\CommentTok{\# significative tra i gruppi. La conferma che queste differenze non sono dovute al caso è il p{-}value}
+\CommentTok{\# estremamente basso (\textless{} 2e{-}16). Questi risultati evidenziano come la qualità percepita delle relazioni }
+\CommentTok{\# interpersonali sia statisticamente associata al benessere dell\textquotesingle{}individuo.}
+\end{Highlighting}
+\end{Shaded}
+
+\section{6. RISULTATI ANOVA}\label{risultati-anova}
+
+\section{La rappresentazione grafica delle medie di soddisfazione di
+vita per ciascun gruppo di relazioni
+amicali}\label{la-rappresentazione-grafica-delle-medie-di-soddisfazione-di-vita-per-ciascun-gruppo-di-relazioni-amicali}
+
+\section{rende più semplice l'interpretazione dei risultati del test
+ANOVA. Il barplot con valori
+numerici}\label{rende-piuxf9-semplice-linterpretazione-dei-risultati-del-test-anova.-il-barplot-con-valori-numerici}
+
+\section{e colori differenziati permette di identificare chiaramente i
+pattern emersi dall'analisi
+statistica.}\label{e-colori-differenziati-permette-di-identificare-chiaramente-i-pattern-emersi-dallanalisi-statistica.}
+
+\section{La visualizzazione consente di evidenziare la direzione e
+l'entità delle differenze tra gruppi.
+Inoltre,}\label{la-visualizzazione-consente-di-evidenziare-la-direzione-e-lentituxe0-delle-differenze-tra-gruppi.-inoltre}
+
+\section{il grafico fornisce una conferma visiva della significatività
+statistica emersa dal test F,
+fornendo}\label{il-grafico-fornisce-una-conferma-visiva-della-significativituxe0-statistica-emersa-dal-test-f-fornendo}
+
+\section{pertanto una maggiore comprensione del legame tra qualità delle
+relazioni interpersonali e i
+livelli}\label{pertanto-una-maggiore-comprensione-del-legame-tra-qualituxe0-delle-relazioni-interpersonali-e-i-livelli}
+
+\section{di benessere personale.}\label{di-benessere-personale.}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Calcolo medie e deviazione standard del gruppo}
+\NormalTok{medie }\OtherTok{\textless{}{-}} \FunctionTok{aggregate}\NormalTok{(Soddisfazione\_vita\_pulita }\SpecialCharTok{\textasciitilde{}}\NormalTok{ RELAM\_gruppo, }\AttributeTok{FUN =}\NormalTok{ mean)}
+\NormalTok{errori }\OtherTok{\textless{}{-}} \FunctionTok{aggregate}\NormalTok{(Soddisfazione\_vita\_pulita }\SpecialCharTok{\textasciitilde{}}\NormalTok{ RELAM\_gruppo, }\AttributeTok{FUN =}\NormalTok{ sd)}
+
+
+\CommentTok{\# Barplot delle medie per gruppo}
+\NormalTok{bp }\OtherTok{\textless{}{-}} \FunctionTok{barplot}\NormalTok{(medie}\SpecialCharTok{$}\NormalTok{Soddisfazione\_vita\_pulita, }
+        \AttributeTok{names.arg =}\NormalTok{ medie}\SpecialCharTok{$}\NormalTok{RELAM\_gruppo,}
+        \AttributeTok{main =} \StringTok{"Medie per gruppo con errori standard"}\NormalTok{,}
+        \AttributeTok{ylab =} \StringTok{"Soddisfazione vita (media)"}\NormalTok{,}
+        \AttributeTok{xlab =} \StringTok{"Soddisfazione relazioni amici"}\NormalTok{,}
+        \AttributeTok{col =} \FunctionTok{c}\NormalTok{(}\StringTok{"lightblue"}\NormalTok{, }\StringTok{"lightgreen"}\NormalTok{, }\StringTok{"lightyellow"}\NormalTok{, }\StringTok{"lightcoral"}\NormalTok{),}
+        \AttributeTok{ylim =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\FunctionTok{max}\NormalTok{(medie}\SpecialCharTok{$}\NormalTok{Soddisfazione\_vita\_pulita) }\SpecialCharTok{+} \DecValTok{1}\NormalTok{)}
+\NormalTok{        )}
+
+
+\CommentTok{\# Aggiunta di valori numerici sopra le barre}
+\FunctionTok{text}\NormalTok{(}
+  \AttributeTok{x =}\NormalTok{ bp, }
+  \AttributeTok{y =}\NormalTok{ medie}\SpecialCharTok{$}\NormalTok{Soddisfazione\_vita\_pulita }\SpecialCharTok{+} \FloatTok{0.2}\NormalTok{, }
+  \AttributeTok{labels =} \FunctionTok{round}\NormalTok{(medie}\SpecialCharTok{$}\NormalTok{Soddisfazione\_vita\_pulita, }\DecValTok{2}\NormalTok{)}
+\NormalTok{  )}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{CODICE-UNITO-R_files/figure-latex/unnamed-chunk-20-1.pdf}}
+
+\section{7. ANOVA MULTIFATTORIALE E ANALISI DETTAGLIATA DEI RISULTATI
+OTTENUTI}\label{anova-multifattoriale-e-analisi-dettagliata-dei-risultati-ottenuti}
+
+\section{L'ANOVA multifattoriale permette di valutare simultaneamente
+l'effetto dei predittori
+sulla}\label{lanova-multifattoriale-permette-di-valutare-simultaneamente-leffetto-dei-predittori-sulla}
+
+\section{soddisfazione di vita, identificando i fattori demografici e
+relazionali che contribuiscono in
+maniera}\label{soddisfazione-di-vita-identificando-i-fattori-demografici-e-relazionali-che-contribuiscono-in-maniera}
+
+\section{significativa alla variazione del benessere. Il modello
+additivo considera gli effetti
+principali}\label{significativa-alla-variazione-del-benessere.-il-modello-additivo-considera-gli-effetti-principali}
+
+\section{di ciascun fattore senza includere le interazioni. L'analisi ha
+l'obiettivo di determinare
+l'importanza}\label{di-ciascun-fattore-senza-includere-le-interazioni.-lanalisi-ha-lobiettivo-di-determinare-limportanza}
+
+\section{relativa ai diversi predittori, distinguendo tra fattori
+relazionali e socio-demografici nella
+spiegazione}\label{relativa-ai-diversi-predittori-distinguendo-tra-fattori-relazionali-e-socio-demografici-nella-spiegazione}
+
+\section{della varianza della variabile dipendente
+(soddisfazione\_vita). La quantificazione degli effetti
+consente}\label{della-varianza-della-variabile-dipendente-soddisfazione_vita.-la-quantificazione-degli-effetti-consente}
+
+\section{di identificare le dimensioni più influenti per il benessere
+individuale. La preparazione del
+dataset}\label{di-identificare-le-dimensioni-piuxf9-influenti-per-il-benessere-individuale.-la-preparazione-del-dataset}
+
+\section{include l'estrazione delle variabili di interesse,
+l'eliminazione delle osservazioni incomplete e
+il}\label{include-lestrazione-delle-variabili-di-interesse-leliminazione-delle-osservazioni-incomplete-e-il}
+
+\section{controllo della numerosità dei gruppi per assicurare
+l'affidabilità dei risultati
+statistici.}\label{controllo-della-numerosituxe0-dei-gruppi-per-assicurare-laffidabilituxe0-dei-risultati-statistici.}
+
+\section{Si effettua un calcolo delle statistiche descrittive e
+un'analisi dettagliata dei risultati utilizzando F
+e}\label{si-effettua-un-calcolo-delle-statistiche-descrittive-e-unanalisi-dettagliata-dei-risultati-utilizzando-f-e}
+
+\section{p-value per ciascun fattore, con infine una classificazione dei
+livelli di significatività
+statistica.}\label{p-value-per-ciascun-fattore-con-infine-una-classificazione-dei-livelli-di-significativituxe0-statistica.}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# PREPARAZIONE DEL DATASET ED ESECUZIONE ANOVA MULTIFATTORIALE}
+
+\FunctionTok{cat}\NormalTok{(}\StringTok{"=== PREPARAZIONE DATI ===}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## === PREPARAZIONE DATI ===
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Selezione variabili per modello multifattoriale}
+\NormalTok{dati\_completi }\OtherTok{\textless{}{-}}\NormalTok{ base\_pulita[, }\FunctionTok{c}\NormalTok{(}\StringTok{"Soddisfazione\_vita"}\NormalTok{, }
+                                \StringTok{"Soddisf\_relazioni\_amici"}\NormalTok{, }
+                                \StringTok{"Eta"}\NormalTok{, }
+                                \StringTok{"Titolo\_studio"}\NormalTok{, }
+                                \StringTok{"Stato\_civile"}\NormalTok{, }
+                                \StringTok{"Condizione\_professionale"}\NormalTok{)]}
+
+
+\CommentTok{\# Rimozione casi con dati mancanti}
+\NormalTok{dati\_completi }\OtherTok{\textless{}{-}} \FunctionTok{na.omit}\NormalTok{(dati\_completi)}
+
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Dimensioni dataset completo:"}\NormalTok{, }\FunctionTok{nrow}\NormalTok{(dati\_completi), }\StringTok{"osservazioni}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Dimensioni dataset completo: 35008 osservazioni
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Variabili incluse:"}\NormalTok{, }\FunctionTok{ncol}\NormalTok{(dati\_completi), }\StringTok{"}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Variabili incluse: 6
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Controllo delle distribuzioni delle variabili}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"=== CONTROLLI PRELIMINARI ===}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## === CONTROLLI PRELIMINARI ===
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Distribuzione Soddisfazione relazioni amici:}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Distribuzione Soddisfazione relazioni amici:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(}\FunctionTok{table}\NormalTok{(dati\_completi}\SpecialCharTok{$}\NormalTok{Soddisf\_relazioni\_amici))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##      Molto Abbastanza       Poco Per niente 
+##       8072      20872       4832       1232
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Distribuzione Età:}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Distribuzione Età:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(}\FunctionTok{table}\NormalTok{(dati\_completi}\SpecialCharTok{$}\NormalTok{Eta))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##   0-2 anni   3-5 anni  6-10 anni 11-13 anni 14-17 anni 18-24 anni 25-34 anni 
+##          0          0          0          0        698        689        714 
+## 35-44 anni 45-54 anni 55-59 anni 60-64 anni 65-69 anni 70-74 anni 75-79 anni 
+##       1836       3668       4402       6100       3398       2985       5185 
+##   80+ anni 
+##       5333
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Distribuzione Titolo di studio:}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Distribuzione Titolo di studio:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(}\FunctionTok{table}\NormalTok{(dati\_completi}\SpecialCharTok{$}\NormalTok{Titolo\_studio))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##       Laurea o post-laurea                    Diploma 
+##                       6190                      13624 
+##              Licenza media Elementare o nessun titolo 
+##                      10391                       4803
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Distribuzione Stato civile:}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Distribuzione Stato civile:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(}\FunctionTok{table}\NormalTok{(dati\_completi}\SpecialCharTok{$}\NormalTok{Stato\_civile))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##             Celibe/Nubile    Coniugato/a convivente Separato/a o divorziato/a 
+##                     11902                     16625                      3130 
+##                  Vedovo/a 
+##                      3351
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Distribuzione Condizione professionale:}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Distribuzione Condizione professionale:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(}\FunctionTok{table}\NormalTok{(dati\_completi}\SpecialCharTok{$}\NormalTok{Condizione\_professionale))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##           Occupato In cerca di lavoro           Inattivo 
+##              15007               3064              16937
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Statistiche descrittive della variabile dipendente}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"=== STATISTICHE DESCRITTIVE SODDISFAZIONE VITA ===}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## === STATISTICHE DESCRITTIVE SODDISFAZIONE VITA ===
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Media:"}\NormalTok{, }\FunctionTok{round}\NormalTok{(}\FunctionTok{mean}\NormalTok{(dati\_completi}\SpecialCharTok{$}\NormalTok{Soddisfazione\_vita), }\DecValTok{2}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Media: 7.23
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Deviazione standard:"}\NormalTok{, }\FunctionTok{round}\NormalTok{(}\FunctionTok{sd}\NormalTok{(dati\_completi}\SpecialCharTok{$}\NormalTok{Soddisfazione\_vita), }\DecValTok{2}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Deviazione standard: 1.64
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Min:"}\NormalTok{, }\FunctionTok{min}\NormalTok{(dati\_completi}\SpecialCharTok{$}\NormalTok{Soddisfazione\_vita), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Min: 0
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Max:"}\NormalTok{, }\FunctionTok{max}\NormalTok{(dati\_completi}\SpecialCharTok{$}\NormalTok{Soddisfazione\_vita), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Max: 10
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Mediana:"}\NormalTok{, }\FunctionTok{median}\NormalTok{(dati\_completi}\SpecialCharTok{$}\NormalTok{Soddisfazione\_vita), }\StringTok{"}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Mediana: 7
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Esecuzione Anova multifattoriale}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"=== ANOVA MULTIFATTORIALE COMPLETA ===}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## === ANOVA MULTIFATTORIALE COMPLETA ===
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Modello con tutti i fattori principali}
+\NormalTok{anova\_completa }\OtherTok{\textless{}{-}} \FunctionTok{aov}\NormalTok{(Soddisfazione\_vita }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Soddisf\_relazioni\_amici }\SpecialCharTok{+} 
+\NormalTok{                                          Eta }\SpecialCharTok{+} 
+\NormalTok{                                          Titolo\_studio }\SpecialCharTok{+} 
+\NormalTok{                                          Stato\_civile }\SpecialCharTok{+} 
+\NormalTok{                                          Condizione\_professionale, }
+                      \AttributeTok{data =}\NormalTok{ dati\_completi)}
+
+\FunctionTok{print}\NormalTok{(}\FunctionTok{summary}\NormalTok{(anova\_completa))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                             Df Sum Sq Mean Sq  F value   Pr(>F)    
+## Soddisf_relazioni_amici      3  11742    3914 1706.966  < 2e-16 ***
+## Eta                         10    172      17    7.483 5.30e-12 ***
+## Titolo_studio                3     98      33   14.242 2.85e-09 ***
+## Stato_civile                 3    845     282  122.782  < 2e-16 ***
+## Condizione_professionale     2    526     263  114.793  < 2e-16 ***
+## Residuals                34986  80224       2                      
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# ANALISI DETTAGLIATA DEI RISULTATI}
+
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{=== ANALISI DETTAGLIATA ===}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## === ANALISI DETTAGLIATA ===
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Estrazione dei risultati per l\textquotesingle{}analisi sistematica}
+\NormalTok{risultati\_completa }\OtherTok{\textless{}{-}} \FunctionTok{summary}\NormalTok{(anova\_completa)}
+\NormalTok{p\_values }\OtherTok{\textless{}{-}}\NormalTok{ risultati\_completa[[}\DecValTok{1}\NormalTok{]][[}\StringTok{"Pr(\textgreater{}F)"}\NormalTok{]]}
+\NormalTok{f\_values }\OtherTok{\textless{}{-}}\NormalTok{ risultati\_completa[[}\DecValTok{1}\NormalTok{]][[}\StringTok{"F value"}\NormalTok{]]}
+\NormalTok{variabili }\OtherTok{\textless{}{-}} \FunctionTok{rownames}\NormalTok{(risultati\_completa[[}\DecValTok{1}\NormalTok{]])}
+
+\CommentTok{\# Analisi sistematica di ogni fattore}
+\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\NormalTok{(}\FunctionTok{length}\NormalTok{(p\_values)}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{)) \{  }\CommentTok{\# {-}1 esclude i residui}
+  \FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{, variabili[i], }\StringTok{":}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+  \FunctionTok{cat}\NormalTok{(}\StringTok{"  F{-}statistic:"}\NormalTok{, }\FunctionTok{round}\NormalTok{(f\_values[i], }\DecValTok{4}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+  \FunctionTok{cat}\NormalTok{(}\StringTok{"  P{-}value:"}\NormalTok{, }\FunctionTok{round}\NormalTok{(p\_values[i], }\DecValTok{4}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+  
+  
+\CommentTok{\# Classificazione di significatività  }
+  \ControlFlowTok{if}\NormalTok{(p\_values[i] }\SpecialCharTok{\textless{}} \FloatTok{0.001}\NormalTok{) \{}
+    \FunctionTok{cat}\NormalTok{(}\StringTok{"  *** ALTAMENTE SIGNIFICATIVO (p \textless{} 0.001)}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\NormalTok{  \} }\ControlFlowTok{else} \ControlFlowTok{if}\NormalTok{(p\_values[i] }\SpecialCharTok{\textless{}} \FloatTok{0.01}\NormalTok{) \{}
+    \FunctionTok{cat}\NormalTok{(}\StringTok{"  ** MOLTO SIGNIFICATIVO (p \textless{} 0.01)}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\NormalTok{  \} }\ControlFlowTok{else} \ControlFlowTok{if}\NormalTok{(p\_values[i] }\SpecialCharTok{\textless{}} \FloatTok{0.05}\NormalTok{) \{}
+    \FunctionTok{cat}\NormalTok{(}\StringTok{"  * SIGNIFICATIVO (p \textless{} 0.05)}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\NormalTok{  \} }\ControlFlowTok{else}\NormalTok{ \{}
+    \FunctionTok{cat}\NormalTok{(}\StringTok{"  NON SIGNIFICATIVO (p ≥ 0.05)}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\NormalTok{  \}}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Soddisf_relazioni_amici  :
+##   F-statistic: 1706.966 
+##   P-value: 0 
+##   *** ALTAMENTE SIGNIFICATIVO (p < 0.001)
+## 
+##  Eta                      :
+##   F-statistic: 7.483 
+##   P-value: 0 
+##   *** ALTAMENTE SIGNIFICATIVO (p < 0.001)
+## 
+##  Titolo_studio            :
+##   F-statistic: 14.2417 
+##   P-value: 0 
+##   *** ALTAMENTE SIGNIFICATIVO (p < 0.001)
+## 
+##  Stato_civile             :
+##   F-statistic: 122.7817 
+##   P-value: 0 
+##   *** ALTAMENTE SIGNIFICATIVO (p < 0.001)
+## 
+##  Condizione_professionale :
+##   F-statistic: 114.7934 
+##   P-value: 0 
+##   *** ALTAMENTE SIGNIFICATIVO (p < 0.001)
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# CONCLUSIONI:}
+\CommentTok{\# L\textquotesingle{}analisi ANOVA multifattoriale conferma che tutti i fattori considerati hanno un impatto statisticamente }
+\CommentTok{\# significativo sulla soddisfazione di vita (p \textless{} 2e{-}16 per ciascuna variabile). }
+\CommentTok{\# \#In particolare, la soddisfazione nelle relazioni con gli amici si conferma il predittore più forte (F(3,}
+\CommentTok{\# 34986) = 1706.97, p \textless{} 0.001), seguito da stato civile, condizione professionale. Titolo di studio ed età.}
+\CommentTok{\# hanno effetti più contenuti, ma comunque significativi. Questi risultati indicano che il benessere}
+\CommentTok{\# individuale è determinato principalmente dalla qualità delle relazioni interpersonali, con le   }
+\CommentTok{\# caratteristiche socio{-}demografiche che mantengono un ruolo secondario ma statisticamente rilevante. }
+\end{Highlighting}
+\end{Shaded}
+
+
+\end{document}
