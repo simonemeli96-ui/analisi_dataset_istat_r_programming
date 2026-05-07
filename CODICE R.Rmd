@@ -1,0 +1,972 @@
+---
+title: "Progetto R"
+author: "Daniele Cepparrone, Simone Meli, Federico Orizzonte"
+date: "2025-06-21"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+# INTRODUZIONE 
+
+# Con questo lavoro si vuole comprendere quanto la soddisfazione di vita sia influenzata dalle situazioni
+# socio-demografiche. Per farlo, si è utilizzato un dataset proveniente da un'indagine ISTAT dal titolo
+# "Aspetti della Vita Quotidiana" dell'anno 2023 riguardante la popolazione italiana. L'obiettivo prefissato # è identificare quali fattori demografici e relazionali influenzano maggiormente il benessere soggettivo,
+# facendo un focus anche sul ruolo delle relazioni interpersonali. Il lavoro si articola in tre fasi:
+# una prima fase di preparazione e pulizia dei dati, una seconda fase di analisi demografica della
+# soddisfazione di vita mediante l'uso di una regressione lineare multipla e, infine, lo studio delle
+# relazioni tra variabili per identificare i predittori principali del benessere individuale, effettuata
+# tramite ANOVA e test di associazione Chi-quadro. Ci si aspetta che la soddisfazione della vita sia 
+# fortemente correlata a quelle variabili demografiche che possano trasmettere una maggiore tranquillità
+# psicologica alla persona; inoltre, il valore delle relazioni interpersonali si prevede abbiano un impatto 
+# importante nel quantificare il grado di soddisfazione degli individui.
+
+# LIBRERIE
+```{r}
+library(dplyr)   # Manipolazione e trasformazione dei dati
+library(readr)   # Importazione di file di testo
+library(knitr)   # Creazione di tabelle formattate e report
+library(ggplot2) # Visualizzazioni grafiche
+library(broom)   # Estrazione dei risultati dai modelli statistici
+```
+
+
+## PARTE I: IMPORTAZIONE DATI, CREAZIONE E PULIZIA DEL NUOVO DATASET 
+
+# 1. IMPORTAZIONE DEI DATI
+
+# L'analisi si basa sui microdati dell'indagine "Aspetti della Vita Quotidiana", pubblicati dall'ISTAT in 
+# formato tab-delimited. Il dataset raccoglie informazioni dettagliate sui diversi aspetti del benessere e  
+# della qualità della vita attraverso interviste condotte su un campione statisticamente rappresentativo
+# della popolazione italiana residente.
+```{r}
+AVQ_Microdati_2023 <- read_delim("C:/Users/simon/OneDrive/Documenti/AVQ_Microdati_2023.txt", 
+                                 delim = "\t", escape_double = FALSE, trim_ws = TRUE)
+```
+
+# 2. SELEZIONE DELLE VARIABILI DI INTERESSE E CREAZIONE DEL NUOVO DATASET
+
+# Dal dataset originale vengono estratte esclusivamente le variabili funzionali agli obiettivi di ricerca,
+# ottimizzando la gestione dei dati e migliorando l'efficienza dell'analisi. Questa procedura consente di 
+# focalizzare l'attenzione sulle dimensioni rilevanti per lo studio della soddisfazione di vita.
+# Le variabili selezionate includono la variabile dipendente (soddisfazione di vita), le variabili 
+# relazionali (qualità delle relazioni familiari e amicali) e i principali predittori socio-demografici 
+# (età, genere, istruzione, stato civile, condizione professionale, area geografica).
+```{r}
+variabili_da_tenere <- c("AMICI2",   # Ha amici su cui contare
+                         "RELFAM",   # Soddisfazione relazioni familiari
+                         "RELAM",    # Soddisfazione relazioni amicali
+                         "VOTOVI",   # Soddisfazione di vita
+                         "FUTUASP",  # Percezione del futuro
+                         "ETAMi",    # Classe di età
+                         "SESSO",    # Genere
+                         "CONDMi",   # Condizione professionale
+                         "REGMf",    # Regione di residenza
+                         "STCIVMi",  # Stato civile
+                         "ISTRMi")   # Titolo di studio
+
+
+# Creazione del dataset di lavoro con le variabili selezionate
+dati_selezionati <- AVQ_Microdati_2023[, variabili_da_tenere]
+
+cat("Variabili selezionate:", ncol(dati_selezionati))
+
+```
+
+# 3. PULIZIA DELLE VARIABILI 
+
+# La fase di pulizia prevede l'identificazione e il trattamento dei valori mancanti, oltre che a un lavoro di
+# ricodifica per quanto riguarda i nomi delle variabili presenti nel dataset. Vengono individuati i codici
+# corrispondenti a "non disponibile", "non risponde" e "non sa". La rimozione di questi valori è necessaria
+# al fine di garantire la validità delle analisi statistiche successive, evitando distorsioni nei risultati.
+# Questa procedura assicura l'integrità metodologica dell'analisi e l'affidabilità delle inferenze
+# statistiche.
+```{r}
+
+# Controllo dei valori NA
+variabili_da_controllare <- c("AMICI2", "RELFAM", "RELAM", "VOTOVI", "FUTUASP", 
+                             "ETAMi", "SESSO", "CONDMi", "REGMf", "STCIVMi", "ISTRMi")
+
+for(var in variabili_da_controllare) {
+ cat("=== ", var, " ===\n")
+ print(table(AVQ_Microdati_2023[[var]], useNA = "always"))
+ cat("\n")
+}
+
+```
+
+```{r}
+
+# Conversione dei codici che non hanno un significato in NA
+AVQ_Microdati_2023$REGMf[AVQ_Microdati_2023$REGMf %in% c("555", "666", "777", "999")] <- NA
+AVQ_Microdati_2023$STCIVMi[AVQ_Microdati_2023$STCIVMi == 9] <- NA  
+AVQ_Microdati_2023$CONDMi[AVQ_Microdati_2023$CONDMi == 9] <- NA
+AVQ_Microdati_2023$ISTRMi[AVQ_Microdati_2023$ISTRMi == "99"] <- NA
+
+cat("Pulizia completata - Codici 'non disponibile' convertiti in NA")
+```
+
+```{r}
+
+# Creazione di un dataset con le variabili ricodificate. Per fare ciò, è stato necessario trasformare i
+# codici numerici ISTAT in etichette descrittive e fattori ordinati, assegnando un significato semantico ai
+# codici. Ciò al fine di rendere i dati maggiormente gestibili e comprensibili per l'analisi statistica.
+
+base_pulita <- data.frame(
+  Ha_amici_su_cui_contare = factor(AVQ_Microdati_2023$AMICI2,
+                                   levels = c(1, 2, 3),
+                                   labels = c("No", "Sì", "Non so")),
+  
+  Soddisf_relazioni_familiari = factor(AVQ_Microdati_2023$RELFAM,
+                                       levels = c(1, 2, 3, 4),
+                                       labels = c("Molto", "Abbastanza", "Poco", "Per niente")),
+  
+  Soddisf_relazioni_amici = factor(AVQ_Microdati_2023$RELAM,
+                                   levels = c(1, 2, 3, 4),
+                                   labels = c("Molto", "Abbastanza", "Poco", "Per niente")),
+  
+  Soddisfazione_vita = as.numeric(AVQ_Microdati_2023$VOTOVI),
+  
+  Percezione_futuro = factor(AVQ_Microdati_2023$FUTUASP,
+                             levels = c(1, 2, 3, 4),
+                             labels = c("Migliorerà", "Resterà la stessa", "Peggiorerà", "Non so")),
+  
+  Eta = factor(AVQ_Microdati_2023$ETAMi,
+               levels = sprintf("%03d", 1:15),
+               labels = c("0-2 anni", "3-5 anni", "6-10 anni", "11-13 anni", "14-17 anni",
+                          "18-24 anni", "25-34 anni", "35-44 anni", "45-54 anni", "55-59 anni",
+                          "60-64 anni", "65-69 anni", "70-74 anni", "75-79 anni", "80+ anni")),
+  
+  Sesso = factor(AVQ_Microdati_2023$SESSO,
+                 levels = c(1, 2),
+                 labels = c("Maschio", "Femmina")),
+  
+  Condizione_professionale = factor(AVQ_Microdati_2023$CONDMi,
+                                    levels = c(1, 2, 3),  # RIMUOVI IL 9!
+                                    labels = c("Occupato", "In cerca di lavoro", "Inattivo")),
+  
+  Regione = factor(AVQ_Microdati_2023$REGMf,
+                   levels = c("010", "020", "030", "040", "050", "060", "070", "080", "090", 
+                              "100", "110", "120", "130", "140", "150", "160", "170", "180", 
+                              "190", "200"),  # RIMUOVI 555,666,777,999!
+                   labels = c("Piemonte", "Valle d'Aosta", "Lombardia", "Trentino-Alto Adige",
+                              "Veneto", "Friuli-Venezia Giulia", "Liguria", "Emilia-Romagna",
+                              "Toscana", "Umbria", "Marche", "Lazio", "Abruzzo", "Molise",
+                              "Campania", "Puglia", "Basilicata", "Calabria", "Sicilia", "Sardegna")),
+  
+  Stato_civile = factor(AVQ_Microdati_2023$STCIVMi,
+                        levels = c(1, 2, 3, 6),  #9 escluso perché già convertito in NA
+                        labels = c("Celibe/Nubile", "Coniugato/a convivente",
+                                   "Separato/a o divorziato/a", "Vedovo/a")),
+  
+  Titolo_studio = factor(AVQ_Microdati_2023$ISTRMi,
+                         levels = c("01", "07", "09", "10"),  #99 escluso perché già convertito in NA
+                         labels = c("Laurea o post-laurea", "Diploma",
+                                    "Licenza media", "Elementare o nessun titolo"))
+)
+
+# Summary per verificare la corretta ricodifica
+kable(summary(base_pulita), caption = "Statistiche descrittive delle variabili ricodificate")
+```
+
+```{r}
+
+# Controllo dei valori mancanti per valutare l'integrità del dataset. Prendendo visione della percentuale dei
+# missing è possibile avere un'idea più precisa su come gestire gli stessi.
+
+# Conteggio dei valori mancanti per ogni variabile
+valori_mancanti <- colSums(is.na(base_pulita))
+print("Valori mancanti per variabile:")
+print(valori_mancanti)
+
+# Calcolo della percentuale complessiva di valori mancanti nel dataset
+perc_mancanti <- mean(is.na(base_pulita)) * 100
+cat("\nPercentuale totale di valori mancanti:", round(perc_mancanti, 2), "%")
+
+# Creazione di una tabella di riepilogo formattata
+kable(data.frame(
+  Variabile = names(valori_mancanti),
+  Valori_Mancanti = valori_mancanti,
+  Percentuale = round(valori_mancanti / nrow(base_pulita) * 100, 2)
+), caption = "Analisi valori mancanti per variabile")
+ 
+```
+
+```{r}
+
+# L'ultima parte del processo di pulizia riguarda la rimozione dei valori mancati e non disponibili. 
+# Ciò è fondamentale per avere un dataset pulito e pronto per le successive analisi statistiche.
+
+# Rimozione delle righe con valori mancanti
+dati_completi <- base_pulita[complete.cases(base_pulita), ]
+
+cat("Dataset originale:", nrow(base_pulita), "righe")
+cat("\nDataset completo:", nrow(dati_completi), "righe")
+
+# Calcolo delle righe rimosse
+cat("\nRighe rimosse:", nrow(base_pulita) - nrow(dati_completi))
+cat("\nPercentuale mantenuta:", round(nrow(dati_completi)/nrow(base_pulita)*100, 1), "%")
+```
+
+## PARTE II: ANALISI SULLA SODDISFAZIONE DELLA VITA IN BASE ALLE CARATTERISTICHE DEMOGRAFICHE
+
+# 1. ISTOGRAMMA DELLA VARIABILE DIPENDENTE VOTOVI (Soddisfazione della Vita)
+
+# Il grafico mostra come sono distribuiti i punteggi di soddisfazione della vita nel nostro campione.
+# L'istogramma consente di poter ottenere delle importanti informazioni:
+# - se i dati sono distribuiti normalmente oppure se hanno un'altra distribuzione
+# - qual è la moda
+# - se sono presenti valori estremi o concentrazioni inusuali
+# - dove si posiziona la media rispetto alla distribuzione (la linea rossa della media ci aiuta a capire se 
+#   la distribuzione è simmetrica oppure assimetrica)
+```{r}
+
+# Creazione dell'istogramma per l'analisi sulla soddisfazione della vita
+  ggplot(dati_completi, aes(x = Soddisfazione_vita)) +
+  
+  # Istogramma
+  geom_histogram(binwidth = 1, fill = "lightblue", color = "black") +
+  
+  # Linea verticale per indicare la media 
+  geom_vline(aes(xintercept = mean(Soddisfazione_vita)), color = "red", linetype = "dashed") + 
+    
+  # Etichette e Titoli
+  labs(
+    title = "Distribuzione Soddisfazione di Vita",
+    subtitle = paste("Media =", round(mean(dati_completi$Soddisfazione_vita), 2)),
+    x = "Soddisfazione (0-10)", 
+    y = "Frequenza"
+  ) +
+  
+  #Personalizzazione asse delle x
+  scale_x_continuous(breaks = 0:10) +
+  
+  #Tema pulito per rimuovere lo sfondo grigio
+  theme_minimal() 
+
+
+# COSA SI EVINCE DAL GRAFICO
+# L'istogramma mostra una distribuzione asimmetrica negativa con una forte concentrazione nei valori alti  
+# della scala. Il valore 8 è la moda del campione. La media di 7.23 indica un livello di soddisfazione 
+# generale buono. La distribuzione rivela che poche persone hanno livelli molto bassi di soddisfazione 
+# (valori 0-4), mentre la maggioranza si colloca nella fascia alta (7-9). Si può ipotizzare che ciò accade 
+# in quanto le persone tendenzialmente attribuiscono una valutazione positiva alla propria vita.
+
+```
+
+# 2. MODELLO DI REGRESSIONE LINEARE MULTIPLA
+
+# Il modello di regressione lineare multipla esamina l'associazione tra la soddisfazione di vita e le 
+# variabili demografiche. L'obiettivo è verificare se esistono differenze significative in relazione al 
+# genere, età, livello di istruzione, stato civile e condizione lavorativa. 
+# Il modello misura l'effetto isolato di ogni variabile sulla soddisfazione, eliminando l'influenza di tutte
+# le altre variabili. Pertanto, ogni coefficiente mostra di quanto varia la soddisfazione quando solo una 
+# variabile specifica cambia, mantenendo le restanti variabili costanti.
+```{r}
+
+# Creazione del modello di regressione usando la funzione lm() (linear model)
+# Formula della regressione: Variabile_dipendente ~ (è spiegata da...) Variabile1 + Variabile2 + ...
+
+modello_regressione <- lm(
+  Soddisfazione_vita ~ Sesso + Eta + Titolo_studio + 
+                       Stato_civile + Condizione_professionale, 
+  data = dati_completi
+)
+
+
+# Gli indicatori del modello
+# - Coefficienti: quanto "pesa" ogni variabile
+# - Standard Error: quanto sono precisi i coefficienti  
+# - t-value e Pr(>|t|): indicano se l'effetto è "vero" o dovuto al caso (se t-value è alto e il p-value
+#   è basso, allora l'effetto è reale e affidabile) 
+# - R-squared: quanto riusciamo a spiegare del fenomeno 
+# - F-statistic: se il modello nel complesso è significativo
+
+summary(modello_regressione)
+
+# CONCLUSIONI:
+# I residui del modello mostrano come sono distribuiti gli errori predittivi. La mediana dei residui è 
+# 0.2354, molto vicina allo zero, indicando che il modello presenta un bias sistematico molto lieve verso la # sottostima; pertanto il modello sottostima la soddisfazione nella metà dei casi di almeno 0.24 punti.
+# I quartili (-0.7370 e 0.8861) sono abbastanza simmetrici intorno alla mediana, suggerendo una
+# distribuzione equilibrata degli errori. Tuttavia, i valori estremi rivelano che il modello sottostima la
+# soddisfazione di alcune persone fino a 7.87 punti (Min = -7.8726) e la sovrastima di altre fino a 3.70
+# punti (Max = 3.6996). Questi residui estremi indicano che esistono casi individuali che il modello
+# demografico non riesce a spiegare, confermando come i fattori non demografici hanno un peso determinante 
+# nella soddisfazione di vita.
+
+```
+
+# 3. STATISTICHE RIASSUNTIVE DEL MODELLO
+
+# Per valutare l'efficacia del modello di regressione nella predizione della soddisfazione di vita, si
+# analizzano le seguenti statistiche diagnostiche: 
+# - R-squared: indica la proporzione di varianza spiegata dal modello (range 0-1). Valori più alti indicano 
+#   maggiore capacità predittiva;
+# - R-squared aggiustato: versione corretta dell'R-squared che penalizza l'aggiunta di variabili poco 
+#   informative;
+# - F-statistic: verifica la significatività complessiva del modello. Valori elevati (>4-5) indicano che 
+#   il modello è statisticamente valido;
+# - p-value: probabilità che i risultati siano casuali. Se < 0.05 il modello è statisticamente significativo
+# - Gradi di libertà: differenza tra numero di osservazioni e parametri stimati. Valori più elevati 
+#   aumentano l'affidabilità delle stime.
+# L'analisi congiunta di queste metriche permette di valutare sia la bontà di adattamento che la validità
+# statistica del modello proposto.
+```{r}
+
+# Estrazione delle statistiche principali del modello 
+statistiche_modello_regressione <- glance(modello_regressione) #glance estrae le statistiche principali
+                                                               #in un formato pulito e ordinato 
+
+# Indici di bontà del modello (visualizzazione formattata delle statistiche principali)
+
+cat("=== STATISTICHE DEL MODELLO ===\n")
+
+# R-squared
+cat("R-squared:", round(statistiche_modello_regressione$r.squared, 4), "\n")
+
+# R-squared aggiustato 
+cat("R-squared aggiustato:", round(statistiche_modello_regressione$adj.r.squared, 4), "\n")
+
+# F-statistic
+cat("F-statistic:", round(statistiche_modello_regressione$statistic, 2), "\n")
+
+# p-value del test F
+cat("p-value:", format.pval(statistiche_modello_regressione$p.value), "\n")
+
+# Gradi di libertà: 
+cat("Gradi di libertà:", statistiche_modello_regressione$df, "\n")
+
+
+# CONCLUSIONI:
+# Le statistiche del modello confermano che, pur essendo statisticamente significativo, ha una capacità
+# predittiva molto limitata. L'R-squared di 0.035 indica che il modello spiega solo il 3.5% della variazione
+# nella soddisfazione di vita, lasciando il 96.5% non spiegato dalle variabili demografiche.
+# L'R-squared aggiustato (0.0345) è molto simile all'R-squared normale (0.035), il che significa che tutte 
+# le variabili incluse nel modello sono utili e non si è aggiunto variabili che peggiorano le predizioni.
+# L'F-statistic (66.64) è decisamente elevato e il p-value praticamente nullo (< 2.22e-16) dimostrano che il
+# modello è statisticamente significativo; pertanto, le relazioni osservate non sono dovute al caso.
+# Tuttavia, la bassa capacità esplicativa suggerisce che le caratteristiche demografiche, pur influenzando
+# statisticamente la soddisfazione di vita, non sono i fattori principali che determinano il benessere
+# individuale. Altri elementi non misurati nel modello hanno un peso nettamente maggiore nella 
+# determinazione della soddisfazione di vita.
+
+```
+
+# 4. GRAFICO COEFFICIENTI SIGNIFICATIVI
+
+# Il grafico a barre visualizza esclusivamente i coefficienti statisticamente significativi del modello 
+# di regressione, facilitando l'interpretazione dei risultati principali. Pertanto, nel grafico sono presenti
+# solo variabili con p-value < 0.05; ciò al fine di evitare di inserire delle variabili che non possono
+# assicurare un risultato attendibile. Grazie alla rappresentazione grafica è possibile avere
+# un'interpretazione immediata e intuitiva, permettendo di identificare agevolmente direzione e intensità
+# degli effetti statisticamente rilevanti. 
+```{r}
+# Estrazione dei coefficienti del modello in formato tabella
+coefficienti <- tidy(modello_regressione) #converte i risultati in una tabella ordinata e leggibile
+
+# Applicazione di un filtro per mostrare solo variabili statisticamente significative
+significativi <- coefficienti[coefficienti$p.value < 0.05 & 
+                             coefficienti$term != "(Intercept)", ] #esclude l'intercetta
+
+# Creazione del grafico a barre orizzontali
+  ggplot(significativi, aes(x = reorder(term, estimate), y = estimate)) + 
+  
+  # Barre colorate: verde per i positivi, rosso per i negativi
+  geom_bar(stat = "identity", fill = ifelse(significativi$estimate > 0, "green", "red")) +
+  
+  
+  coord_flip() +  #ruota il grafico per migliorare la leggibilità
+    
+  
+  labs(title = "Coefficienti Significativi del Modello di Regressione",
+       x = "Variabili", 
+       y = "Coefficiente") +
+  
+  # Linea di riferimento sullo zero per distinguere effetti positivi e negativi
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  
+
+  theme_minimal() 
+  
+  
+# CONCLUSIONI:
+# Nel grafico dei coefficienti significativi emerge un quadro netto dove solamente due fattori aumentano la
+# soddisfazione: essere sposati o conviventi mostra l'effetto positivo più forte (+0.38 punti), seguito
+# dall'essere separati o divorziati (+0.08 punti). Tutti gli altri fattori riducono la soddisfazione. L'età
+# mostra un effetto negativo progressivo molto evidente, con le barre che aumentano costantemente di intesità # con l'avanzamento dell'età. La condizione lavorativa evidenzia forti disparità: essere disoccupati
+# rappresenta il secondo fattore più penalizzante (-0.55 punti), mentre gli inattivi subiscono un impatto
+# moderato (-0.21 punti).Per quanto concerne l'istruzione si nota come chi ha la licenza elementare o nessun
+# titolo presenta il maggiore impatto negativo (-0.26 punti). Infine, le differenze di genere sono minime,
+# con le donne leggermente svantaggiate (-0.11 punti). Si vuole far notare come non compaiano nel grafico
+# coloro che sono vedovi; ciò avviene perché il coefficiente è troppo piccolo (+0,029) rispetto all'errore
+# (0.041), il t-value è sotto la soglia di significatività, mentre il p-value ha una percentuale elevata
+# (48,5%) che dipenda dal caso. 
+ 
+```
+
+# 5. BOXPLOT STATO CIVILE
+
+# Il boxplot consente di confrontare la distribuzione della soddisfazione di vita con i diversi stati 
+# civili, evidenziando differenze nelle tendenze centrali e variabilità tra i gruppi. Permette inoltre un
+# confronto immediato tra i gruppi stessi, mostrando simultaneamente misure di tendenza centrale, dispersione # e presenza di valori estremi. La sovrapposizione di media e mediana fornisce indicazioni sulla simmetria 
+# della distribuzione: quando coincidono la distribuzione è approssimativamente simmetrica, mentre delle   
+# discrepanze indicano asimmetria. Il grafico consente di identificare quale stato civile ha livelli
+# più elevati di benessere e di osservare la variabilità interna a ciascun gruppo. Inoltre, il boxplot
+# consente di comprendere se, anche dal punto di vista visivo, si conferma quanto constatato nel modello
+# di regressione.
+```{r}
+
+# Creazione del boxplot per confronto tra Soddisfazione Vita e Stato Civile 
+ggplot(dati_completi, aes(x = Stato_civile, 
+                          y = Soddisfazione_vita, 
+                          fill = Stato_civile)) + #ogni gruppo ha un colore differente
+  
+  
+  # Boxplot per ogni gruppo di stato civile
+  geom_boxplot()+
+  
+  
+  # Aggiunge al grafico sia la mediana (linea nera) che la media (punto bianco)
+  stat_summary(fun = mean, 
+               geom = "point", 
+               shape = 23, #forma a diamante
+               size = 3, #dimensione media
+               fill = "white" #colore del punto
+               ) + 
+  
+  labs(title = "Soddisfazione di Vita per Stato Civile",
+       subtitle = "I coniugati mostrano maggiore soddisfazione",
+       x = "Stato Civile", 
+       y = "Soddisfazione (0-10)"
+       ) +
+  
+  # Formattazione per una migliore leggibilità
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1), # hjust allinea il testo 
+        legend.position = "none" # Nasconde la legenda
+    )
+
+  # Statistiche descrittive
+  dati_completi %>%
+   group_by(Stato_civile) %>%
+   summarise(
+     n = n(),
+     media = round(mean(Soddisfazione_vita, na.rm = TRUE), 2),       #na.rm = TRUE rimuove eventuali missing 
+     mediana = round(median(Soddisfazione_vita, na.rm = TRUE), 2),
+     q1 = round(quantile(Soddisfazione_vita, 0.25, na.rm = TRUE), 2),
+     q3 = round(quantile(Soddisfazione_vita, 0.75, na.rm = TRUE), 2),
+     dev_std = round(sd(Soddisfazione_vita, na.rm = TRUE), 2)
+  )
+
+ 
+
+# CONCLUSIONI:
+# Il boxplot e le statistiche descrittive confermano i risultati del modello di regressione. I coniugati/
+# conviventi mostrano la soddisfazione più elevata (mediana 8 e media 7.35) e la minore variabilità
+# (dev.std 1.57). Ciò convalida quanto rinvenuto nel modello, dove questa categoria aveva il coefficiente
+# positivo più forte della regressione (+0.38). La distribuzione compatta nella parte alta della scala indica
+# come il matrimonio/convivenza rappresenti un fattore importante per il benessere della persona.
+# Per quanto riguarda invece il gruppo di riferimento del modello, ovvero i celibi/nubili, presentano valori
+# intermedi (mediana 7 e media 7.24), fungendo appunto da baseline per i confronti. I separati/divorziati
+# presentano una soddisfazione media leggermente inferiore rispetto ai celibi, ma nella regressione avevano
+# un coefficiente positivo (+0.08). Ciò è possibile in quanto nel modello rientrano anche altre variabili;
+# pertanto, a parità di altre caratteristiche, essere in questa categoria in realtà ha un lieve effetto
+# positivo rispetto all'essere single. I vedovi mostrano la soddisfazione mediamente più bassa (6.76) e una
+# maggiore variabilità (1.82). Però, analizzando il coefficiente quasi nullo si può evincere come questa 
+# differenza sia principalmente legata all'età avanzata piuttosto che dalla categoria stessa. In conclusione, # questa analisi conferma che essere in coppia rappresenta il fattore più influente tra le variabili di stato
+# civile per quanto riguarda la soddisfazione di vita, avvalorando pertanto il suo impatto significativo
+# mostrato nel modello di regressione.
+
+```
+
+# 6. BOXPLOT CONDIZIONE PROFESSIONALE
+
+# L'analisi della distribuzione della soddisfazione di vita per condizione professionale permette di  
+# esaminare l'associazione tra status lavorativo e benessere individuale, considerando le implicazioni 
+# socio-economiche delle diverse posizioni occupazionali. Il boxplot consente di evidenziare eventuali
+# differenze significative nel benessere tra occupati, disoccupati e inattivi, constatandone anche
+# l'intensità. La visualizzazione grafica consente di identificare quale condizione professionale si associa 
+# ai livelli più elevati di soddisfazione e di osservare l'eterogeneità delle risposte all'interno di 
+# ciascuna categoria lavorativa. Inoltre, il boxplot consente di comprendere se, anche dal punto di vista
+# visivo, si conferma quanto constatato nel modello di regressione.
+```{r}
+# Creazione del boxplot per condizione professionale
+ggplot(dati_completi, aes(x = Condizione_professionale, 
+                          y = Soddisfazione_vita, 
+                          fill = Condizione_professionale)) +
+  
+  
+  # Boxplot per visualizzare la distribuzione di ogni gruppo
+  geom_boxplot() +
+  
+  
+  stat_summary(
+    fun = mean, 
+    geom = "point", 
+    shape = 23, 
+    size = 3, 
+    fill = "white") +
+  
+  labs(title = "Soddisfazione di Vita per Condizione Professionale",
+       subtitle = "La disoccupazione riduce significativamente la soddisfazione",
+       x = "Condizione Professionale", 
+       y = "Soddisfazione (0-10)") +
+  
+  
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    legend.position = "none"
+    )
+
+# Statistiche descrittive 
+dati_completi %>%
+  group_by(Condizione_professionale) %>%
+  summarise(
+    n = n(),
+    media = round(mean(Soddisfazione_vita, na.rm = TRUE), 2),
+    mediana = round(median(Soddisfazione_vita, na.rm = TRUE), 2),
+    q1 = round(quantile(Soddisfazione_vita, 0.25, na.rm = TRUE), 2),
+    q3 = round(quantile(Soddisfazione_vita, 0.75, na.rm = TRUE), 2),
+    dev_std = round(sd(Soddisfazione_vita, na.rm = TRUE), 2),
+    min = round(min(Soddisfazione_vita, na.rm = TRUE), 2),
+    max = round(max(Soddisfazione_vita, na.rm = TRUE), 2)
+  )
+
+
+# CONCLUSIONI:
+# Il boxplot e le statistiche descrittive confermano i risultati del modello di regressione. Gli occupati,
+# gruppo di riferimento nel modello, presentano la soddisfazione più elevata (mediana 8 e media 7.40), e la
+# minore variabilità (dev.std 1.46). Dal grafico si evince inoltre una distribuzione concentrata nella parte
+# superiore della scala. I disoccupati hanno invece la soddisfazione più bassa in media (6.82), confermando
+# pertanto il coefficiente negativo della regressione (-0.55). Nonostante presentino la medesima mediana
+# degli inattivi (7), la media più bassa a causa degli outliers e la maggiore variabilità indicano una
+# distribuzione più accentuata verso i valori bassi. Gli inattivi sono in una posizione intermedia, 
+# coerente con il coefficiente negativo moderato presente nella regressione (-0.21). A conferma di ciò anche
+# una media superiore rispetto ai disoccupati, così come a una minore deviazione standard. 
+# Questo risultato sottolinea l'importanza dell'occupazione per la stabilità economica e il benessere 
+# psicologico, evidenziando come la disoccupazione e l'inattività rappresentino invece un fattore negativo
+# significativo.
+
+```
+
+## PARTE III: TEST CHI QUADRO E ANOVA 
+
+# 1. PREPARAZIONE DATI PER ANALISI BIVARIATA
+
+# La preparazione dei dati prevede la creazione di un dataset specifico per l'analisi della relazione tra  
+# soddisfazione di vita e qualità delle relazioni di amicizia. Il processo include la pulizia delle variabili
+# attraverso la rimozione dei valori non validi, la conversione in formati appropriati per diversi test 
+# statistici e la categorizzazione della variabile dipendente. Le trasformazioni effettuate sono al fine di 
+# condurre sia analisi parametriche (ANOVA) che non parametriche (Chi-quadro). Infine, l'eliminazione delle 
+# osservazioni incomplete assicura la validità e l'affidabilità dei risultati statistici.
+```{r}
+
+preparazione_data <- function(AVQ_Microdati_2023) {
+  base_pulita <- AVQ_Microdati_2023 %>%
+    
+    # Conversione e pulizia soddisfazione relazioni di amicizia
+    transmute(
+      RELAM_num = ifelse(as.numeric(RELAM) %in% c(8, 9), NA, as.numeric(RELAM)),
+      
+      # Conversione soddisfazione di vita
+      VOTOVI_num = as.numeric(VOTOVI),
+      
+      # Categorizzazione soddisfazione vita in livelli ordinati
+      VOTOVI_CAT = cut(VOTOVI_num, 
+                       breaks = c(-1, 4, 6, 8, 10), 
+                       labels = c("Bassa", "Media-bassa", "Media-alta", "Alta"),
+                       include.lowest = TRUE,
+                       ordered = TRUE
+                       ),
+      
+      # Creazione fattore ordinato per soddisfazione relazioni
+      Soddisf_relazioni_amici = factor(RELAM_num,
+                                     levels = c(1, 2, 3, 4),
+                                     labels = c("Molto", "Abbastanza", "Poco", "Per niente"),
+                                     ordered = TRUE
+                                     ),
+
+    ) %>%
+    
+    # Rimozione osservazioni con dati mancanti
+    filter(!is.na(VOTOVI_CAT) & !is.na(Soddisf_relazioni_amici))
+  
+  return(base_pulita)
+}
+
+```
+
+# 2. TEST DEL CHI-QUADRO
+
+# Il test del Chi-quadro viene utilizzato per verificare se esiste un'associazione statisticamente  
+# significativa tra soddisfazione di vita e la qualità delle relazioni d'amicizia. Si costruisce una 
+# tabella di contingenza che consente l'incrocio tra le frequenze osservate delle due variabili 
+# categoriali. Le ipotesi statistiche sono:
+# H0: Le variabili sono indipendenti (pertanto non c'è alcuna associazione)
+# H1: Esiste un'associazione significativa tra le variabili
+# La metodologia prevede dapprima il calcolo delle frequenze attese sotto l'ipotesi nulla, a seguire
+# il confronto con le frequenze osservate, infine, l'analisi delle proporzioni per identificare la
+# direzione dell'associazione. Il p-value determina la significatività statistica della relazione.
+```{r}
+
+# TEST DEL CHI-QUADRO
+
+# Preparazione dati puliti per l'analisi
+dati_puliti <- preparazione_data(AVQ_Microdati_2023)
+
+
+# Creazione tabella di contingenza
+tabella_contingenza <- table(dati_puliti$VOTOVI_CAT, dati_puliti$Soddisf_relazioni_amici)
+
+# Analisi esplorativa
+cat("=== ANALISI CHI-QUADRO ===\n\n")
+print("Tabella di contingenza (VOTOVI_CAT x Soddisfazione relazioni amici):")
+print(tabella_contingenza)
+
+cat("\nProporzioni per riga:\n")
+print(round(prop.table(tabella_contingenza, margin = 1), 3))
+
+cat("\nProporzioni per colonna:\n")
+print(round(prop.table(tabella_contingenza, margin = 2), 3))
+
+
+# Test statistico
+test_chi_quadro <- chisq.test(tabella_contingenza)
+
+cat("\nRisultati del test del chi quadro:\n")
+print(test_chi_quadro)
+
+
+# Interpretazione dei risultati
+cat("\n=== INTERPRETAZIONE CHI-QUADRO ===\n")
+cat("Chi-quadro statistica:", round(test_chi_quadro$statistic, 3), "\n")
+cat("Gradi di libertà:", test_chi_quadro$parameter, "\n")
+cat("P-value:", format(test_chi_quadro$p.value, scientific = TRUE), "\n")
+
+
+# Valutazione significatività statistica 
+if (test_chi_quadro$p.value < 0.05) {
+  cat("CONCLUSIONE: C'è un'associazione statisticamente significativa tra soddisfazione vita e soddisfazione relazioni amici (p < 0.05)\n")
+} else {
+  cat("CONCLUSIONE: Non c'è evidenza di associazione statisticamente significativa tra soddisfazione vita e soddisfazione relazioni amici (p >= 0.05)\n")
+}
+  
+# CONCLUSIONI:  
+# Il test del Chi-quadro mostra una relazione fortemente significativa (χ² = 5712.2, df = 9, p < 2.2e-16)
+# tra qualità delle relazioni amicali e soddisfazione di vita. Dall'analisi delle proporzioni si evince come 
+# la soddisfazione nelle amicizie sia progressivamente associata a maggiori livelli di benessere: chi ha alta
+# soddisfazione di vita è "molto soddisfatto" delle amicizie nel 43.7% dei casi, mentre chi ha "bassa    
+# soddisfazione" solo nel 9.8%. Infine, coloro che sono "per niente soddisfatti" ricadono nelle categorie di
+# soddisfazione bassa (30.1%) o media-bassa (33.8%). Questi risultati confermano l'esistenza di un forte  
+# legame bidirezionale tra qualità delle relazioni interpersonali e benessere individuale.
+# Si rinviene come le amicizie soddisfacenti costituiscano un elemento fondamentale per la soddisfazione di 
+# vita.
+
+```
+
+# 3. VERIFICA DELLE ASSUNZIONI STATISTICHE PER IL TEST CHI-QUADRO
+
+# La validità del test del Chi-quadro dipende dal rispetto di determinate assunzioni, relative alle 
+# frequenze attese nelle celle della tabella di contingenza. La verifica di queste condizioni è fondamentale
+# per garantire l'affidabilità dell'inferenza statistica. I criteri di validità sono:
+# - Almeno l'80% delle celle deve presentare frequenza attesa ≥ 5
+# - Nessuna cella dovrebbe avere frequenza attesa < 1
+# La violazione di queste assunzioni compromette l'accuratezza del test. L'analisi delle frequenze attese 
+# costituisce dunque un passaggio imprescindibile per la validazione dei risultati. Durante la verifica
+# delle assunzione del test del Chi-quadro si controlla che le frequenze attese non abbiano valori bassi.
+```{r}
+# Verifica delle assunzioni del test del Chi-quadro
+
+cat("\nFrequenze attese:\n")
+print(round(test_chi_quadro$expected, 2))
+
+# Controllo validità delle frequenze attese (ovvero ≥ 5)
+frequenze_basse <- sum(test_chi_quadro$expected < 5)
+cat("\nCelle con frequenza attesa < 5:", frequenze_basse, "su", length(test_chi_quadro$expected), "\n")
+
+
+# Valutazione affidabilità del test
+if (frequenze_basse > 0) {
+  cat("ATTENZIONE: Alcune celle hanno frequenza attesa < 5. I risultati potrebbero non essere affidabili.\n")
+  cat("Considera l'uso del test esatto di Fisher o l'accorpamento di categorie.\n")
+}
+
+# COSA SI EVINCE DALLA TABELLA:
+# Tutte le celle della tabella di contingenza presentano frequenze attese superiori a 5 
+# (range: 60.67 - 12215.13), rispettando pienamente i criteri di validità del test di Pearson. 
+# I risultati del test Chi-quadro sono statisticamente affidabili, in quanto nessuna cella vìola
+# l'assunzione. Non è pertanto necessario ricorrere a test alternativi o all'accorpamento di categorie.
+
+```
+
+# 4. ANALISI DELLA VARIANZA (ANOVA): Preparazione dati e statistiche descrittive
+
+# L'analisi della varianza a una via viene impiegata per verificare l'esistenza di differenze statisticamente
+# significative nella soddisfazione di vita media tra i diversi livelli di soddisfazione delle relazioni 
+# d'amicizia. Il test consente di confrontare simultaneamente le medie di più gruppi indipendenti.
+# Il modello prevede:
+# - Variabile dipendente VOTOVI: soddisfazione di vita (scala continua 0-10)
+# - Variabile indipendente RELAM: soddisfazione relazioni amicali (4 categorie ordinali)
+# - Confronto tra gruppi indipendenti
+# Le ipotesi statistiche sono:
+# H0: μ₁ = μ₂ = μ₃ = μ₄ (uguaglianza delle medie tra gruppi)
+# H1: Almeno una media differisce significativamente dalle altre
+# La procedura prevede la preparazione dei dati mediante la rimozione dei valori mancanti, l'analisi 
+# esplorativa delle distribuzioni, la verifica delle assunzioni parametriche e l'esecuzione del test F. 
+# L'interpretazione del p-value determina la significatività delle differenze osservate tra i gruppi.
+```{r}
+
+# PREPARAZIONE DATI PER ANOVA
+
+# Conversione e pulizia variabili
+Soddisfazione_vita = as.numeric(AVQ_Microdati_2023$VOTOVI)
+RELAM = AVQ_Microdati_2023$RELAM
+
+# Filtro osservazioni valide (esclude NA e valori non validi 8,9)
+validi <- !is.na(Soddisfazione_vita) & !is.na(RELAM) & RELAM %in% c(1, 2, 3, 4)
+
+Soddisfazione_vita_pulita <- Soddisfazione_vita[validi]
+RELAM_pulito <- RELAM[validi]
+
+
+# Creazione fattore con etichette descrittive
+RELAM_gruppo <- factor(RELAM_pulito, 
+                      levels = c(1, 2, 3, 4), 
+                      labels = c("Molto", "Abbastanza", "Poco", "Per niente")
+                      )
+
+# Controllo numerosità campionaria per gruppo
+cat("Numero di osservazioni per gruppo:\n")
+table(RELAM_gruppo)
+
+
+# STATISTICHE DESCRITTIVE
+
+# Creazione dataset per analisi
+dati_per_analisi <- data.frame(
+  Soddisfazione_vita = Soddisfazione_vita_pulita,
+  Gruppo = RELAM_gruppo
+)
+
+# Calcolo statistiche per gruppo
+statistiche_dplyr <- dati_per_analisi %>%
+  group_by(Gruppo) %>%
+  summarise(
+    Media = round(mean(Soddisfazione_vita), 2),
+    DevSt = round(sd(Soddisfazione_vita), 2),
+    N = n(),
+    .groups = 'drop'
+  )
+
+cat("\nStatistiche descrittive usando dplyr:\n")
+print(statistiche_dplyr)
+
+
+# Grafico sulla distribuzione della soddisfazione della vita per livello di relazioni tra amici
+boxplot(Soddisfazione_vita_pulita ~ RELAM_gruppo,
+        main = "Soddisfazione vita per soddisfazione relazioni amici",
+        xlab = "Soddisfazione relazioni amici", 
+        ylab = "Soddisfazione vita")
+
+# CONCLUSIONI:
+# I dati mostrano una distribuzione realistica, in quanto la maggioranza (21.683) è "abbastanza" soddisfatta
+# delle amicizie. Le statistiche rivelano un chiaro pattern decrescente nelle medie (da 7.93 a 5.34) e
+# crescente nelle deviazioni standard (da 1.44 a 2.71). Ciò suggerisce che una minore soddisfazione nelle
+# amicizie si associa un più basso benessere una maggiore variabilità nelle risposte. Questi pattern 
+# preliminari evidenziano differenze sostanziali tra i gruppi, fornendo una solida base empirica per il  
+# test ANOVA. 
+
+
+```
+
+# 5. ESECUZIONE TEST ANOVA
+
+# Il test ANOVA viene condotto per verificare l'esistenza di differenze significative nelle medie della
+# soddisfazione di vita tra i gruppi facenti parte le relazioni amicali. La statistica F misura se le
+# differenze tra i gruppi sono maggiori delle differenze casuali all'interno di ciascun gruppo. Il p-value
+# indica quanto è probabile ottenere questi risultati per pura casualità; un valore p < 0.05 suggerisce 
+# il rifiuto dell'ipotesi nulla, confermando l'esistenza di differenze statisticamente significative
+# tra almeno due gruppi. L'analisi ha l'obiettivo di verificare il legame tra qualità delle relazioni
+# amicali e il benessere personale, da cui si aspetta si possa evincere l'importanza della socialità per 
+# la avere una vita soddisfacente. 
+```{r}
+
+cat("\n=== ANOVA ===\n")
+
+# Modello Anova one way
+anova_risultato <- aov(Soddisfazione_vita_pulita ~ RELAM_gruppo)
+
+# Risultati del test
+summary(anova_risultato)
+
+# CONCLUSIONI
+# L'analisi ANOVA ha mostrato un effetto statisticamente significativo del livello di soddisfazione nelle
+# relazioni d'amicizia sulla soddisfazione di vita (F(3, 36373) = 1743, p < 2e-16). Il valore F molto 
+# elevato (1743) con 3 gradi di libertà per il fattore e 36373 per i residui indica delle differenze 
+# significative tra i gruppi. La conferma che queste differenze non sono dovute al caso è il p-value
+# estremamente basso (< 2e-16). Questi risultati evidenziano come la qualità percepita delle relazioni 
+# interpersonali sia statisticamente associata al benessere dell'individuo.
+
+```
+
+# 6. RISULTATI ANOVA
+
+# La rappresentazione grafica delle medie di soddisfazione di vita per ciascun gruppo di relazioni amicali 
+# rende più semplice l'interpretazione dei risultati del test ANOVA. Il barplot con valori numerici 
+# e colori differenziati permette di identificare chiaramente i pattern emersi dall'analisi statistica.
+# La visualizzazione consente di evidenziare la direzione e l'entità delle differenze tra gruppi. Inoltre,
+# il grafico fornisce una conferma visiva della significatività statistica emersa dal test F, fornendo
+# pertanto una maggiore comprensione del legame tra qualità delle relazioni interpersonali e i livelli
+# di benessere personale.
+```{r}
+
+# Calcolo medie e deviazione standard del gruppo
+medie <- aggregate(Soddisfazione_vita_pulita ~ RELAM_gruppo, FUN = mean)
+errori <- aggregate(Soddisfazione_vita_pulita ~ RELAM_gruppo, FUN = sd)
+
+
+# Barplot delle medie per gruppo
+bp <- barplot(medie$Soddisfazione_vita_pulita, 
+        names.arg = medie$RELAM_gruppo,
+        main = "Medie per gruppo con errori standard",
+        ylab = "Soddisfazione vita (media)",
+        xlab = "Soddisfazione relazioni amici",
+        col = c("lightblue", "lightgreen", "lightyellow", "lightcoral"),
+        ylim = c(0, max(medie$Soddisfazione_vita_pulita) + 1)
+        )
+
+
+# Aggiunta di valori numerici sopra le barre
+text(
+  x = bp, 
+  y = medie$Soddisfazione_vita_pulita + 0.2, 
+  labels = round(medie$Soddisfazione_vita_pulita, 2)
+  )
+
+```
+
+# 7. ANOVA MULTIFATTORIALE E ANALISI DETTAGLIATA DEI RISULTATI OTTENUTI
+
+# L'ANOVA multifattoriale permette di valutare simultaneamente l'effetto dei predittori sulla
+# soddisfazione di vita, identificando i fattori demografici e relazionali che contribuiscono in maniera
+# significativa alla variazione del benessere. Il modello additivo considera gli effetti principali 
+# di ciascun fattore senza includere le interazioni. L'analisi ha l'obiettivo di determinare l'importanza 
+# relativa ai diversi predittori, distinguendo tra fattori relazionali e socio-demografici nella spiegazione 
+# della varianza della variabile dipendente (soddisfazione_vita). La quantificazione degli effetti consente
+# di identificare le dimensioni più influenti per il benessere individuale. La preparazione del dataset
+# include l'estrazione delle variabili di interesse, l'eliminazione delle osservazioni incomplete e il  
+# controllo della numerosità  dei gruppi per assicurare l'affidabilità dei risultati statistici. 
+# Si effettua un calcolo delle statistiche descrittive e un'analisi dettagliata dei risultati utilizzando F e
+# p-value per ciascun fattore, con infine una classificazione dei livelli di significatività statistica.
+```{r}
+
+# PREPARAZIONE DEL DATASET ED ESECUZIONE ANOVA MULTIFATTORIALE
+
+cat("=== PREPARAZIONE DATI ===\n")
+
+
+# Selezione variabili per modello multifattoriale
+dati_completi <- base_pulita[, c("Soddisfazione_vita", 
+                                "Soddisf_relazioni_amici", 
+                                "Eta", 
+                                "Titolo_studio", 
+                                "Stato_civile", 
+                                "Condizione_professionale")]
+
+
+# Rimozione casi con dati mancanti
+dati_completi <- na.omit(dati_completi)
+
+cat("Dimensioni dataset completo:", nrow(dati_completi), "osservazioni\n")
+cat("Variabili incluse:", ncol(dati_completi), "\n\n")
+
+
+# Controllo delle distribuzioni delle variabili
+cat("=== CONTROLLI PRELIMINARI ===\n")
+
+cat("Distribuzione Soddisfazione relazioni amici:\n")
+print(table(dati_completi$Soddisf_relazioni_amici))
+cat("\n")
+
+cat("Distribuzione Età:\n")
+print(table(dati_completi$Eta))
+cat("\n")
+
+cat("Distribuzione Titolo di studio:\n")
+print(table(dati_completi$Titolo_studio))
+cat("\n")
+
+cat("Distribuzione Stato civile:\n")
+print(table(dati_completi$Stato_civile))
+cat("\n")
+
+cat("Distribuzione Condizione professionale:\n")
+print(table(dati_completi$Condizione_professionale))
+cat("\n")
+
+
+# Statistiche descrittive della variabile dipendente
+cat("=== STATISTICHE DESCRITTIVE SODDISFAZIONE VITA ===\n")
+cat("Media:", round(mean(dati_completi$Soddisfazione_vita), 2), "\n")
+cat("Deviazione standard:", round(sd(dati_completi$Soddisfazione_vita), 2), "\n")
+cat("Min:", min(dati_completi$Soddisfazione_vita), "\n")
+cat("Max:", max(dati_completi$Soddisfazione_vita), "\n")
+cat("Mediana:", median(dati_completi$Soddisfazione_vita), "\n\n")
+
+
+# Esecuzione Anova multifattoriale
+cat("=== ANOVA MULTIFATTORIALE COMPLETA ===\n")
+
+# Modello con tutti i fattori principali
+anova_completa <- aov(Soddisfazione_vita ~ Soddisf_relazioni_amici + 
+                                          Eta + 
+                                          Titolo_studio + 
+                                          Stato_civile + 
+                                          Condizione_professionale, 
+                      data = dati_completi)
+
+print(summary(anova_completa))
+
+ 
+# ANALISI DETTAGLIATA DEI RISULTATI
+
+cat("\n=== ANALISI DETTAGLIATA ===\n")
+
+# Estrazione dei risultati per l'analisi sistematica
+risultati_completa <- summary(anova_completa)
+p_values <- risultati_completa[[1]][["Pr(>F)"]]
+f_values <- risultati_completa[[1]][["F value"]]
+variabili <- rownames(risultati_completa[[1]])
+
+# Analisi sistematica di ogni fattore
+for(i in 1:(length(p_values)-1)) {  # -1 esclude i residui
+  cat("\n", variabili[i], ":\n")
+  cat("  F-statistic:", round(f_values[i], 4), "\n")
+  cat("  P-value:", round(p_values[i], 4), "\n")
+  
+  
+# Classificazione di significatività  
+  if(p_values[i] < 0.001) {
+    cat("  *** ALTAMENTE SIGNIFICATIVO (p < 0.001)\n")
+  } else if(p_values[i] < 0.01) {
+    cat("  ** MOLTO SIGNIFICATIVO (p < 0.01)\n")
+  } else if(p_values[i] < 0.05) {
+    cat("  * SIGNIFICATIVO (p < 0.05)\n")
+  } else {
+    cat("  NON SIGNIFICATIVO (p ≥ 0.05)\n")
+  }
+}
+
+# CONCLUSIONI:
+# L'analisi ANOVA multifattoriale conferma che tutti i fattori considerati hanno un impatto statisticamente 
+# significativo sulla soddisfazione di vita (p < 2e-16 per ciascuna variabile). 
+# #In particolare, la soddisfazione nelle relazioni con gli amici si conferma il predittore più forte (F(3,
+# 34986) = 1706.97, p < 0.001), seguito da stato civile, condizione professionale. Titolo di studio ed età.
+# hanno effetti più contenuti, ma comunque significativi. Questi risultati indicano che il benessere
+# individuale è determinato principalmente dalla qualità delle relazioni interpersonali, con le   
+# caratteristiche socio-demografiche che mantengono un ruolo secondario ma statisticamente rilevante. 
+
+```
+
