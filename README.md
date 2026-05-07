@@ -1,6 +1,10 @@
 # Soddisfazione della vita in Italia: analisi dei predittori 
 # socio-demografici e relazionali (R)
 
+> **Progetto accademico di gruppo**  
+> Autori: Daniele Cepparrone, Simone Meli, Federico Orizzonte  
+> Master in Analisi Dati per la Business Intelligence — Università di Torino, A.A. 2024/2025
+
 ## Descrizione del progetto
 Analisi statistica dei fattori socio-demografici e relazionali che 
 influenzano la soddisfazione di vita della popolazione italiana, 
@@ -123,9 +127,28 @@ sociale abbiano un peso determinante non catturato dalle sole
 variabili demografiche.
 
 ---
+## Come riprodurre l'analisi
+
+1. Scarica i microdati AVQ 2023 dal
+   [portale ISTAT](https://www.istat.it/it/archivio/91926)
+2. Salva il file come `AVQ_Microdati_2023.txt`
+3. Aggiorna il percorso nella riga di importazione del file `.Rmd`
+4. Apri il file in RStudio e installa le dipendenze:
+```r
+   install.packages(c("dplyr", "ggplot2", "readr", "knitr", "broom"))
+```
+5. Clicca **"Knit"** per generare il report completo
+
 
 ## 📌 Note metodologiche
 I microdati ISTAT sono pubblici e disponibili sul portale ufficiale.  
 Il dataset grezzo non è incluso nel repository per ragioni di dimensione.  
 Per riprodurre l'analisi, scaricare il file `AVQ_Microdati_2023.txt` 
 da ISTAT e aggiornare il percorso nella prima riga del codice.
+
+## Struttura del repository
+
+| File | Descrizione |
+|---|---|
+| `CODICE_UNITO_R.Rmd` | Codice R Markdown completo: data cleaning, regressione, ANOVA, Chi-quadro |
+| `Presentazione Aspetti vita quotidiana.pdf` | Presentazione dei risultati |
